@@ -1,14 +1,17 @@
-import { StrictMode } from 'react';
+import React from 'react';
+
 import { createRoot } from 'react-dom/client';
-import './index.css';
+import App from './App';
 import { AuthProvider } from 'react-oidc-context';
 
 import Configuration from './components/Authentication/config';
 import { Config } from './components/Authentication/models';
 
-import App from './App.tsx';
+const container = document.getElementById('root')!;
+const root = createRoot(container);
 
 const config: Config = Configuration.read();
+
 const oidcConfig = {
     authority: config.Authority,
     client_id: config.ClientId,
@@ -17,10 +20,10 @@ const oidcConfig = {
     // ...
 };
 
-createRoot(document.getElementById('root')!).render(
-    <AuthProvider {...oidcConfig}>
-        <StrictMode>
+root.render(
+    <React.StrictMode>
+        <AuthProvider {...oidcConfig}>
             <App />
-        </StrictMode>
-    </AuthProvider>
+        </AuthProvider>
+    </React.StrictMode>
 );

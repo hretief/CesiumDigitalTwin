@@ -18,16 +18,18 @@ export const LIGHT_MODE_THEME = 'light';
 export const PORT = 3000;
 
 //# Your test application public address
-export const APP_URL = 'http://localhost:3000';
+export const APP_URL = 'https://localhost:3000';
 
 export const AUTH_AUTHORITY = 'https://ims.bentley.com';
+//export const AUTH_AUTHORITY = 'https://ims.bentley.com/connect/authorize';
+//export const ACCESS_TOKEN_URL = 'https://ims.bentley.com/connect/token';
 
-//# Your application client ID and secret
+//# Your application client ID and secret (Sparta)
 export const AUTH_CLIENT_ID = 'spa-nmSEY4A9ShvRT6uCwoWeDlg6I';
 export const AUTH_CLIENT_SCOPES = 'openid profile email itwin-platform';
 
-export const AUTH_CLIENT_REDIRECT_URI = 'http://localhost:3000/signin-oidc';
-export const AUTH_CLIENT_LOGOUT_URI = 'http://localhost:3000/signout-oidc';
+export const AUTH_CLIENT_REDIRECT_URI = 'https://localhost:3000/signin-oidc';
+export const AUTH_CLIENT_LOGOUT_URI = 'https://localhost:3000/signout-oidc';
 
 //iModels
 

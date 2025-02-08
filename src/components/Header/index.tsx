@@ -1,13 +1,12 @@
-
 import React, { useState } from 'react';
 import { AppBar, Box, Toolbar } from '@mui/material';
 
 import { Hamburger } from './Hamburger';
-//import { Search } from './Search';
+import { Search } from './Search';
 import { AppTitle } from './AppTitle';
 import { ThemeSwitcher } from './ThemeSwitcher';
 import { Messages, More, Notifications, UserAccount } from '../Actions';
-//import { DefaultMenu, MobileMenu } from './Menu';
+import { DefaultMenu, MobileMenu } from './Menu';
 
 interface HeaderProps {
     toggleNavigation: () => void;
@@ -35,7 +34,7 @@ export const Header = ({ toggleNavigation }: HeaderProps) => {
                 <Toolbar disableGutters variant="dense">
                     <Hamburger toggleNavigation={toggleNavigation} />
                     <AppTitle />
-
+                    <Search />
                     <Box sx={{ flexGrow: 1 }} />
                     <Box sx={{ display: { xs: 'none', md: 'flex', alignItems: 'center' } }}>
                         <ThemeSwitcher />
@@ -48,12 +47,8 @@ export const Header = ({ toggleNavigation }: HeaderProps) => {
                     </Box>
                 </Toolbar>
             </AppBar>
+            <MobileMenu isMenuOpen={Boolean(mobileMoreAnchorEl)} handleMenuOpen={handleMobileMenuOpen} handleMenuClose={handleMobileMenuClose} anchorEl={mobileMoreAnchorEl} />
+            <DefaultMenu isMenuOpen={Boolean(anchorEl)} handleMenuClose={handleMenuClose} anchorEl={anchorEl} />
         </>
     );
 };
-/*
-                    <Search />
-            <MobileMenu isMenuOpen={Boolean(mobileMoreAnchorEl)} handleMenuOpen={handleMobileMenuOpen} handleMenuClose={handleMobileMenuClose} anchorEl={mobileMoreAnchorEl} />
-            <DefaultMenu isMenuOpen={Boolean(anchorEl)} handleMenuClose={handleMenuClose} anchorEl={anchorEl} />
-
-*/

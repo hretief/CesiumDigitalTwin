@@ -6,10 +6,11 @@ import logo from '../logo.svg';
 
 import { AppContext } from '../contexts';
 import { APP_TITLE, PAGE_TITLE_HOME } from '../utils/constants';
-
+import { useAuth } from 'react-oidc-context';
 
 export const Home = () => {
     const context = useContext(AppContext);
+    const auth = useAuth();
 
     return (
         <>
@@ -18,7 +19,7 @@ export const Home = () => {
                     {PAGE_TITLE_HOME} | {APP_TITLE}
                 </title>
             </Helmet>
-            <Typography variant="h4">{`Hello World`}</Typography>
+            <Typography variant="h4">{`Hello, ${auth.user?.profile.given_name} 🎃`}</Typography>
             <LogoWrapper>
                 <StyledLogo src={logo} alt="logo" />
             </LogoWrapper>

@@ -4,6 +4,8 @@ import { Icon, IconButton, lighten, ListItemButton, ListItemIcon, ListItemText, 
 import { ExpandLess, ExpandMore } from '@mui/icons-material';
 
 import { Route } from '../../../../types';
+import { authenticationSlice } from '../../../Authentication/state/authenticationSlice';
+import { useAuth } from 'react-oidc-context';
 
 interface RouteItemProps {
     route: Route;
@@ -14,6 +16,7 @@ interface RouteItemProps {
 
 export const RouteItem = ({ route, nested = false, hasChildren = false, handleMenuClick = () => {} }: RouteItemProps) => {
     const location = useLocation();
+    const auth = useAuth();
 
     const handleNavigate = (e: React.MouseEvent<HTMLAnchorElement, MouseEvent>) => {
         if (!route.isEnabled || hasChildren) e.preventDefault();

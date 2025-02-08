@@ -7,7 +7,6 @@ import { SignOutRoute } from './SignOutRoute';
 import { routes } from '../../../config';
 import { Route } from '../../../types';
 
-
 export const Routes = () => {
     const [routesState, setRoutesStage] = useState<Route[]>(routes);
 
@@ -45,7 +44,6 @@ export const Routes = () => {
                 ))}
             </List>
             <SignOutRoute />
-            
         </>
     );
 };

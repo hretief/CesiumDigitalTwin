@@ -1,8 +1,10 @@
 import { createElement, useState } from 'react';
 import { styled, Box } from '@mui/material';
 import { Footer } from '../Footer';
+
 import { Header } from '../Header';
 import { FOOTER_HEIGHT } from '../../utils/constants';
+
 import { useRoutes, RouteObject } from 'react-router-dom';
 import { routes } from '../../config';
 import { Route as AppRoute } from '../../types';
