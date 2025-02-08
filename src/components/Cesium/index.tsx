@@ -36,11 +36,6 @@ export default function CesiumPage() {
 
     return (
         <>
-            <PageTitle title={location.pathname.replaceAll('/', ' ').trimStart()} />
-            <p>
-                Status: {status}, Authenticated: {auth.isAuthenticated ? 'True' : 'False'}
-            </p>
-
             <Viewer full ref={refViewer}>
                 <Scene mode={SceneMode.SCENE3D} morphDuration={10}>
                     {cadmodels.map((model) => (
