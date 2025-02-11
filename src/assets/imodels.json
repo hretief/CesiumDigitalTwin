@@ -1,18 +1,26 @@
 [
     {
-        "id": "669dde67-eb69-4e0b-bcf2-f722eee94746",
-        "name": "Station",
-        "description": "Station description",
-        "lat": 39.9471111111,
-        "lng": -75.1409166667,
-        "height": 0
-    },
-    {
         "id": "78ce6371-e70a-45d8-b5c2-57d29a4325d8",
         "name": "Flyover",
         "description": "I95 and Highway 78 Flyover",
         "lat": 35.83759415727747,
         "lng": -77.97630628565874,
-        "height": 0
+        "height": 1000
+    },
+    {
+        "id": "214753a1-6fff-4155-b8de-79a773b73c97",
+        "name": "Nuclear Twin",
+        "description": "Nuclear Twin",
+        "lat": 42.212992,
+        "lng": -71.032533,
+        "height": 1000
+    },
+    {
+        "id": "f1a9dbc8-4519-40bd-b535-cc996f307d72",
+        "name": "Novo",
+        "description": "Novo",
+        "lat": 55.91708582560409,
+        "lng": 12.283814513126975,
+        "height": 1000
     }
 ]

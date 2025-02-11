@@ -21,9 +21,9 @@ const oidcConfig = {
 };
 
 root.render(
-    <React.StrictMode>
-        <AuthProvider {...oidcConfig}>
-            <App />
-        </AuthProvider>
-    </React.StrictMode>
+    <AuthProvider {...oidcConfig}>
+        <App />
+    </AuthProvider>
 );
+
+/*    <React.StrictMode>    </React.StrictMode> */

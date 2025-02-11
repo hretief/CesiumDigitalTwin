@@ -4,7 +4,7 @@
  */
 
 // Interface for iModels
-export interface ICADModel {
+export interface IBIMModel {
     id: string;
     name: string;
     description: string;
