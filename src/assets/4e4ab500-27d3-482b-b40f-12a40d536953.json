@@ -1,0 +1,12 @@
+{
+    "realityData": [
+        {
+            "id": "cf31f68d-1033-4b76-ac5d-bd3aa62f7653",
+            "displayName": "Local Bridge 3D Mesh",
+            "type": "RealityMesh3DTiles"
+        }
+    ],
+    "_links": {
+        "next": null
+    }
+}

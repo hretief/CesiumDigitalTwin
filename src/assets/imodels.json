@@ -1,7 +1,7 @@
 [
     {
-        "id": "78ce6371-e70a-45d8-b5c2-57d29a4325d8",
-        "name": "Flyover",
+        "id": "2633fb80-8a57-4c13-92e4-86372e04f33b",
+        "name": "Pleasant Grove",
         "description": "I95 and Highway 78 Flyover",
         "lat": 35.83759415727747,
         "lng": -77.97630628565874,
@@ -21,6 +21,16 @@
         "description": "Novo",
         "lat": 55.91708582560409,
         "lng": 12.283814513126975,
+        "height": 1000
+    },
+
+    {
+        "id": "b95148fc-0af8-4aaf-9848-148c4d02eb49",
+        "name": "Crack Detection",
+        "description": "Crack Detection",
+
+        "lat": 43.465237522433476,
+        "lng": -83.7779615166854,
         "height": 1000
     }
 ]

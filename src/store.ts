@@ -4,16 +4,19 @@ import { configureStore, ThunkAction, Action } from '@reduxjs/toolkit';
 //import projectReducer from "./components/projects/state/projectSlice";
 //import facilityReducer from "./components/Facilities/state/facilitiesSlice";
 //import userReducer from "./components/Users/state/usersSlice";
-//import themeReducer from "./components/theme/state/themeSlice";
+import themeReducer from './components/Theme/state/themeSlice';
 import layoutReducer from './state/layoutSlice';
 import { authenticationReducer } from './components/Authentication/state/authenticationSlice';
+import bimmodelReducer from './components/Cesium/BIMModel/state/elementSlice';
+import drawerReducer from './components/Cesium/state/drawerSlice';
 
 export const store = configureStore({
     reducer: {
-        //counter: counterReducer,
+        element: bimmodelReducer,
+        drawers: drawerReducer,
         //segments: segmentReducer,
         //projects: projectReducer,
-        //theme: themeReducer,
+        theme: themeReducer,
         layout: layoutReducer,
         //facilities: facilityReducer,
         //users: userReducer,

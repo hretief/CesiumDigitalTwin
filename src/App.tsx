@@ -6,7 +6,7 @@ import { useAuth } from 'react-oidc-context';
 import { Layout } from './components/Layout';
 
 import { AppContext, ThemeModeContext } from './contexts';
-import { AppClient } from './clients'
+import { AppClient } from './clients';
 import { getAppTheme } from './styles/theme';
 import { DARK_MODE_THEME, LIGHT_MODE_THEME } from './utils/constants';
 import { Provider } from 'react-redux';
@@ -39,7 +39,7 @@ function App() {
             auth.signinRedirect();
         }
     }, [isLoggedIn]);
-*/
+    */
 
     return (
         <>
