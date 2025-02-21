@@ -14,6 +14,7 @@ import MailIcon from '@mui/icons-material/Mail';
 // #region Cesium imports
 import { Viewer as CesiumViewer, Color, Cartesian3, SceneMode, Math, Cartesian2, ScreenSpaceEventType, ScreenSpaceEventHandler as CesiumScreenSpaceEventHandler, Cesium3DTileFeature } from 'cesium';
 import { Viewer, Scene, useCesium, CesiumComponentRef, ScreenSpaceEventHandler, ScreenSpaceEvent } from 'resium';
+import { assert, compareNumbers, compareStrings, Id64, Id64String, IndexedValue, IndexMap, UintArray } from '@itwin/core-bentley';
 // #endregion
 
 // #region React imports
@@ -62,10 +63,15 @@ export default function CesiumPage() {
         dispatch(DRAWER_STATE({ open: isopen }));
     };
 
+    const localElemId = (elementId: string) => {
+        Id64.getLocalId(Id64.fromString(elementId));
+        console.log(`localElemId: ${Id64.getLocalId(Id64.fromString(elementId))}`);
+    };
+
     const list = (anchor: Anchor) => (
         <Box sx={{ width: anchor === 'top' || anchor === 'bottom' ? 'auto' : 250 }} role="presentation" onClick={toggleDrawer(false)} onKeyDown={toggleDrawer(false)}>
             <List>
-                {[`ElementId: ${currentSelectedElement.element_id}`, `iModelId: ${currentSelectedElement.imodel_id}`, 'Send email', 'Drafts'].map((text, index) => (
+                {[`ElementId: ${localElemId(currentSelectedElement.element_id)}`, `iModelId: ${currentSelectedElement.imodel_id}`, 'Send email', 'Drafts'].map((text, index) => (
                     <ListItem key={text} disablePadding>
                         <ListItemButton>
                             <ListItemIcon>{index % 2 === 0 ? <InboxIcon /> : <MailIcon />}</ListItemIcon>
@@ -113,7 +119,7 @@ export default function CesiumPage() {
     }, []); // ---> The `[]` is required, it won't work with `[myDependency]` etc.
 
     // #endregion
-    const drawerWidth = '25%'
+    const drawerWidth = '25%';
 
     // #region Render code
     //sample URL for reality data: https://connect-imodelweb.bentley.com/imodeljs/?projectId=4e4ab500-27d3-482b-b40f-12a40d536953&iModelId=b95148fc-0af8-4aaf-9848-148c4d02eb49
@@ -143,7 +149,7 @@ export default function CesiumPage() {
                     <Fragment key={defaultAnchor}>
                         <Drawer
                             sx={{
-                                '& .MuiDrawer-paper': { boxSizing: 'border-box', width: drawerWidth, height: '80%', top: '15%',},
+                                '& .MuiDrawer-paper': { boxSizing: 'border-box', width: drawerWidth, height: '80%', top: '15%' },
                                 zIndex: 1,
                             }}
                             anchor={defaultAnchor}

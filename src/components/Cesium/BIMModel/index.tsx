@@ -12,7 +12,7 @@ import { useDispatch } from 'react-redux';
 //Local imports
 import { IElement } from '../../../classes/interfaces/IElement';
 import { UPD_SELECTED_ELEMENT } from './state/elementSlice';
-import {   } from "../../Theme/state/themeSlice";
+import {} from '../../Theme/state/themeSlice';
 import { DRAWER_STATE } from '../state/drawerSlice';
 
 interface IModelProps {
@@ -55,6 +55,7 @@ export default function BIMModel(props: IModelProps) {
                 ITwinPlatform.defaultAccessToken = token;
                 mytiles = await ITwinData.createTilesetFromIModelId(props.imodelId);
                 scene?.primitives.add(mytiles);
+                console.log(`myfiles URL to the tileset for iModel (${props.imodelId}): ${mytiles!.resource!.url! as string}`);
 
                 //console.log(`myfiles URL to the tileset for iModel (${props.imodelId}): ${mytiles!.resource!.url! as string}`);
             } catch (e) {
@@ -81,6 +82,14 @@ export default function BIMModel(props: IModelProps) {
         handler.setInputAction(() => {
             let elem: IElement | undefined;
             if (selectedFeature) {
+                // debug code
+                const propertyIds = selectedFeature.getPropertyIds();
+                const length = propertyIds.length;
+                for (let i = 0; i < length; ++i) {
+                    const propertyId = propertyIds[i];
+                    console.log(`{propertyId}: ${selectedFeature.getProperty(propertyId)}`);
+                }
+                // end debug code
                 selectedElement = (selectedFeature as Cesium3DTileFeature).getProperty('element');
                 elem = { element_id: selectedElement!.toString(), imodel_id: props.imodelId };
 
