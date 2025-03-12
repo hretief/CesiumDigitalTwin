@@ -1,4 +1,4 @@
-import { IUser } from './interfaces/IUser';
+import { IUser } from './interfaces';
 import { Company } from './Company';
 import { Address } from './Address';
 

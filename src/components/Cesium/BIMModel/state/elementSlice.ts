@@ -1,6 +1,6 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 //import { WritableDraft } from 'immer';
-import { IElement } from '../../../../classes/interfaces/IElement';
+import { IElement } from '../../../../classes/interfaces';
 
 const initialState: IElement = {
     element_id: '',

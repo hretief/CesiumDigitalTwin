@@ -1,5 +1,5 @@
 //Cesium imports
-import { ScreenSpaceEventType, Cesium3DTileFeature, Color, Cesium3DTileset as Cesium3DdTilesetType, ITwinPlatform, ITwinData, Cartesian3, ScreenSpaceEventHandler as CesiumScreenSpaceEventHandler } from 'cesium';
+import { ScreenSpaceEventType, Cesium3DTileFeature, Color, Cesium3DTileset as Cesium3DdTilesetType, ITwinPlatform, ITwinData, Cartesian3, ScreenSpaceEventHandler as CesiumScreenSpaceEventHandler, HeadingPitchRange } from 'cesium';
 import { Entity, Cesium3DTileset, useCesium, ScreenSpaceEventHandler, ScreenSpaceEvent } from 'resium';
 
 //React imports
@@ -10,10 +10,11 @@ import { useAuth } from 'react-oidc-context';
 import { useDispatch } from 'react-redux';
 
 //Local imports
-import { IElement } from '../../../classes/interfaces/IElement';
+import { IElement, IModelBoundingSphere } from '../../../classes/interfaces';
 import { UPD_SELECTED_ELEMENT } from './state/elementSlice';
 import {} from '../../Theme/state/themeSlice';
 import { DRAWER_STATE } from '../state/drawerSlice';
+import { APPEND_BOUNDING_SPHERE } from './state/viewerSlice';
 
 interface IModelProps {
     imodelId: string;
@@ -52,12 +53,16 @@ export default function BIMModel(props: IModelProps) {
     useEffect(() => {
         const fetchUrl = async () => {
             try {
+                let bsArr: IModelBoundingSphere[] = [];
+                let bs: IModelBoundingSphere;
+
                 ITwinPlatform.defaultAccessToken = token;
                 mytiles = await ITwinData.createTilesetFromIModelId(props.imodelId);
                 scene?.primitives.add(mytiles);
-                console.log(`myfiles URL to the tileset for iModel (${props.imodelId}): ${mytiles!.resource!.url! as string}`);
-
-                //console.log(`myfiles URL to the tileset for iModel (${props.imodelId}): ${mytiles!.resource!.url! as string}`);
+                console.log(`myfiles URL to the tileset for iModel (${props.imodelId}): ${mytiles!.resource!.url! as string}, boundingsphere: ${mytiles!.boundingSphere}`);
+                
+                bs = { imodelId: props.imodelId!.toString(), boundingSphere: mytiles!.boundingSphere };
+                dispatch(APPEND_BOUNDING_SPHERE(bs));
             } catch (e) {
                 console.log(`Token: ${token}`);
                 console.log(`Error reported while processing iModel ${props.imodelId} from Components/BIMModel Component: ${e}`);

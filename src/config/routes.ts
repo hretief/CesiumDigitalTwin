@@ -14,12 +14,14 @@ import {
     Factory as FacilityIcon,
     HeatPump as EquipIcon,
     People as People,
+    Satellite as Satellite
 } from '@mui/icons-material';
 
 import { Home } from '../pages/Home';
 import { PageDefault as Dashboard } from '../components/PageDefault';
 import UsersPage from '../components/Users/UserPage';
 import CesiumPage from '../components/Cesium';
+import TwinsPage from '../components/Twins/TwinPage';
 /*
 import Counter from '../components/counter/Counter';
 import ProjectsPage from '../components/projects/ProjectsPage';
@@ -60,6 +62,17 @@ const routes: Array<Route> = [
         icon: People,
         appendDivider: true,
     },
+    {
+        key: 'router-twins',
+        title: 'Twins',
+        description: 'Digital Twins',
+        component: TwinsPage,
+        path: '/tenant-twins',
+        isEnabled: true,
+        icon: Satellite,
+        appendDivider: true,
+    },
+
     {
         key: 'router-cesium',
         title: 'Cesium',

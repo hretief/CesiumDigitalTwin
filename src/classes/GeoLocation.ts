@@ -1,4 +1,4 @@
-import { IGeoLocation } from './interfaces/IGeoLocation';
+import { IGeoLocation } from './interfaces';
 
 export class GeoLocation implements IGeoLocation {
     Lat: string = '';

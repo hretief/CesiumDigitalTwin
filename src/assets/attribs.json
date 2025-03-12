@@ -1,0 +1,23 @@
+{
+    "attribs": [
+        { "id": 164, "Name": "ATWS MITIGATION", "Value": "No" },
+        { "id": 200, "Name": "CRITICALITY", "Value": "See EMPRV" },
+        { "id": 216, "Name": "EQ FLAG", "Value": "No" },
+        { "id": 219, "Name": "FIRE PROTECTION", "Value": "No" },
+        { "id": 232, "Name": "GROUP D AUG", "Value": "No" },
+        { "id": 304, "Name": "Q QUALIFIED", "Value": "No" },
+        { "id": 305, "Name": "QLIST FLAG", "Value": "No" },
+        { "id": 316, "Name": "RISK SIGNIFICANT", "Value": "No" },
+        { "id": 319, "Name": "SEISMIC", "Value": "No" },
+        { "id": 320, "Name": "SEISMIC II/I", "Value": "No" },
+        { "id": 321, "Name": "SEPARATION GROUP", "Value": "*" },
+        { "id": 348, "Name": "STATION BLACKOUT", "Value": "No" },
+        { "id": 359, "Name": "SYSTEM CRITICAL", "Value": "No" },
+        { "id": 371, "Name": "TRAIN", "Value": "N Train" },
+        { "id": 441, "Name": "INSTALLED LENGTH", "Value": "10.0000000000000000000" },
+        { "id": 445, "Name": "LIMIT FILL", "Value": "100.0000000000000000000" },
+        { "id": 603, "Name": "DIGITAL DEVICE", "Value": "No" },
+        { "id": 622, "Name": "NFPA 805 FIRE PROTECTION", "Value": "No" },
+        { "id": 636, "Name": "SFPLI", "Value": "No" }
+    ]
+}

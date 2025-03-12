@@ -1,4 +1,4 @@
-import { configureStore, ThunkAction, Action } from '@reduxjs/toolkit';
+import { configureStore, ThunkAction, Action, getDefaultMiddleware } from '@reduxjs/toolkit';
 //import counterReducer from "./components/counter/counterSlice";
 //import segmentReducer from "./components/segments/state/segmentSlice";
 //import projectReducer from "./components/projects/state/projectSlice";
@@ -9,6 +9,7 @@ import layoutReducer from './state/layoutSlice';
 import { authenticationReducer } from './components/Authentication/state/authenticationSlice';
 import bimmodelReducer from './components/Cesium/BIMModel/state/elementSlice';
 import drawerReducer from './components/Cesium/state/drawerSlice';
+import viewerReducer from './components/Cesium/BIMModel/state/viewerSlice';
 
 export const store = configureStore({
     reducer: {
@@ -20,8 +21,12 @@ export const store = configureStore({
         layout: layoutReducer,
         //facilities: facilityReducer,
         //users: userReducer,
+        viewerRed: viewerReducer,
         authentication: authenticationReducer,
     },
+    middleware: getDefaultMiddleware({
+        serializableCheck: false,
+    }),
 });
 
 export type AppDispatch = typeof store.dispatch;

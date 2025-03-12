@@ -2,10 +2,11 @@ import { useEffect, useState, useRef } from 'react';
 import { useAuth } from 'react-oidc-context';
 import { DataGrid, GridColDef } from '@mui/x-data-grid';
 import { Box } from '@mui/material';
-import UserView from './UserView';
-import { fetchUsers } from './api';
+import TwinView from './TwinView';
+import { fetchTwins } from './api';
 
-function UsersTableView() {
+
+function TwinsTableView() {
     const auth = useAuth();
     const isFirstRender = useRef(true);
 
@@ -16,26 +17,26 @@ function UsersTableView() {
         auth.signinRedirect();
     }
 
-    const [users, setUsers] = useState([]);
-    const [selectedUser, setSelectedUser] = useState(4);
+    const [twins, setTwins] = useState([]);
+    const [selectedTwin, setSelectedTwin] = useState(4);
 
     const columns: GridColDef[] = [
-        { field: 'id', headerName: 'ID', width: 50 },
-        { field: 'name', headerName: 'Name', width: 150 },
-        { field: 'username', headerName: 'User Name', width: 150 },
-        { field: 'email', headerName: 'Email', width: 150 },
+        { field: 'number', headerName: 'Number', width: 350 },
+        { field: 'displayName', headerName: 'Name', width: 450 },
+        { field: 'type', headerName: 'Type', width: 250 },
+        { field: 'subClass', headerName: 'Twin Type', width: 250 },
     ];
 
     const handleClick = (e: any) => {
-        setSelectedUser(e.row.id);
+        setSelectedTwin(e.row.id);
     };
 
     useEffect(() => {
         if (isFirstRender.current) {
             const fetchData = async () => {
-                const returnedData = await fetchUsers();
+                const returnedData = await fetchTwins(token);
                 const json = await returnedData;
-                setUsers(json);
+                setTwins(json);
             };
             fetchData();
         }
@@ -50,11 +51,11 @@ function UsersTableView() {
         <>
             <div>
                 <Box>
-                    <DataGrid rows={users} columns={columns} loading={!users.length} pagination onRowClick={handleClick} />
+                    <DataGrid rows={twins} columns={columns} loading={!twins.length} pagination onRowClick={handleClick} />
                 </Box>
             </div>
         </>
     );
 }
 
-export default UsersTableView;
+export default TwinsTableView;

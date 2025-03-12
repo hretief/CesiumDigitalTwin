@@ -1,4 +1,4 @@
-import { ICompany } from './interfaces/ICompany';
+import { ICompany } from './interfaces';
 
 export class Company implements ICompany {
     Name: string = '';

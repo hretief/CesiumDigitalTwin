@@ -2,7 +2,7 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
 // Local imports
-import { IDrawerState } from '../../../classes/interfaces/IDrawerState';
+import { IDrawerState } from '../../../classes/interfaces';
 
 const initialState: IDrawerState = {
     open: true,
