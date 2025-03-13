@@ -27,7 +27,7 @@ async function realityDataAPI(token: string, url: string) {
     }
 }
 
-export async function fetchiTwinRealityDataReferences(token: string = '', iTwinId: string = '') {
-    let url: string = `${baseUrl}/?iTwinId=${iTwinId}`;
+export async function fetchRealityMesh3DTiles(token: string = '', iTwinId: string = '') {
+    let url: string = `${baseUrl}/?iTwinId=${iTwinId}&types=RealityMesh3DTiles`;
     return await realityDataAPI(token, url);
 }

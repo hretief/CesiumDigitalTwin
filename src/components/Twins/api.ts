@@ -27,6 +27,6 @@ async function twinsAPI(token: string | undefined, url: string) {
 }
 
 export async function fetchTwins(token: string | undefined) {
-    let url: string = `${baseUrl}`;
+    let url: string = `${baseUrl}?$top=1000`;
     return await twinsAPI(token, url);
 }

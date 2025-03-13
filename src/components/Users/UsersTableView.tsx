@@ -2,6 +2,7 @@ import { useEffect, useState, useRef } from 'react';
 import { useAuth } from 'react-oidc-context';
 import { DataGrid, GridColDef } from '@mui/x-data-grid';
 import { Box } from '@mui/material';
+import Grid from '@mui/material/Grid2';
 import UserView from './UserView';
 import { fetchUsers } from './api';
 
@@ -50,7 +51,14 @@ function UsersTableView() {
         <>
             <div>
                 <Box>
-                    <DataGrid rows={users} columns={columns} loading={!users.length} pagination onRowClick={handleClick} />
+                    <Grid container spacing={2}>
+                        <Grid>
+                            <DataGrid rows={users} columns={columns} loading={!users.length} pagination onRowClick={handleClick} />
+                        </Grid>
+                        <Grid>
+                            <div>1</div>
+                        </Grid>
+                    </Grid>
                 </Box>
             </div>
         </>

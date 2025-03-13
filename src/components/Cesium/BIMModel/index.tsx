@@ -60,7 +60,7 @@ export default function BIMModel(props: IModelProps) {
                 mytiles = await ITwinData.createTilesetFromIModelId(props.imodelId);
                 scene?.primitives.add(mytiles);
                 console.log(`myfiles URL to the tileset for iModel (${props.imodelId}): ${mytiles!.resource!.url! as string}, boundingsphere: ${mytiles!.boundingSphere}`);
-                
+
                 bs = { imodelId: props.imodelId!.toString(), boundingSphere: mytiles!.boundingSphere };
                 dispatch(APPEND_BOUNDING_SPHERE(bs));
             } catch (e) {
@@ -120,7 +120,10 @@ export default function BIMModel(props: IModelProps) {
                     }
                 }}
             ></Cesium3DTileset>
-            <Entity point={{ pixelSize: 20 }} name={props.name} description={props.description} position={props.position} />
         </>
     );
 }
+/*
+
+            <Entity point={{ pixelSize: 20 }} name={props.name} description={props.description} position={props.position} />
+*/

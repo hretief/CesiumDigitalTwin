@@ -1,5 +1,6 @@
 [
     {
+        "itwinid": "",
         "id": "2633fb80-8a57-4c13-92e4-86372e04f33b",
         "name": "Pleasant Grove",
         "description": "I95 and Highway 78 Flyover",
@@ -8,6 +9,7 @@
         "height": 1000
     },
     {
+        "itwinid": "",
         "id": "214753a1-6fff-4155-b8de-79a773b73c97",
         "name": "Nuclear Twin",
         "description": "Nuclear Twin",
@@ -16,6 +18,7 @@
         "height": 1000
     },
     {
+        "itwinid": "",
         "id": "f1a9dbc8-4519-40bd-b535-cc996f307d72",
         "name": "Novo",
         "description": "Novo",
@@ -25,6 +28,7 @@
     },
 
     {
+        "itwinid": "",
         "id": "b95148fc-0af8-4aaf-9848-148c4d02eb49",
         "name": "Crack Detection",
         "description": "Crack Detection",
@@ -34,6 +38,7 @@
         "height": 1000
     },
     {
+        "itwinid": "",
         "id": "f045d857-0756-4c9e-b038-dc9f923a7e8c",
         "name": "I-290",
         "description": "I-290",

@@ -1,0 +1,6 @@
+[
+    { "field": "number", "headerName": "Number", "width": 350 },
+    { "field": "displayName", "headerName": "Name", "width": 450 },
+    { "field": "type", "headerName": "Type", "width": 250 },
+    { "field": "subClass", "headerName": "Twin Type", "width": 250 }
+]

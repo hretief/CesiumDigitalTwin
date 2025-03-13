@@ -1,5 +1,6 @@
 import { useAuth } from 'react-oidc-context';
 
+import { PageTitle } from '../PageTitle';
 import TwinsTableView from './TwinsTableView';
 
 function UserPage() {
@@ -12,7 +13,12 @@ function UserPage() {
         auth.signinRedirect();
     }
 
-    return <TwinsTableView></TwinsTableView>;
+    return (
+        <>
+            <PageTitle title="Digital Twins" />
+            <TwinsTableView></TwinsTableView>
+        </>
+    );
 }
 
 export default UserPage;

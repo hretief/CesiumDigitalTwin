@@ -1,8 +1,12 @@
-import  UsersTableView from './UsersTableView';
+import UsersTableView from './UsersTableView';
+import { PageTitle } from '../PageTitle';
 
 function UserPage() {
     return (
-        <UsersTableView></UsersTableView>
+        <>
+        <PageTitle title="Users" />
+            <UsersTableView></UsersTableView>
+        </>
     );
 }
 

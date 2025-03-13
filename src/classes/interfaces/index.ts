@@ -33,16 +33,6 @@ export interface IAttrib {
     Value: string;
 }
 
-// Interface for iModels
-export interface IBIMModel {
-    id: string;
-    name: string;
-    description: string;
-    lat: number;
-    lng: number;
-    height: number;
-}
-
 // Interface for MUI Drawers
 export interface IDrawerState {
     open: boolean;
@@ -64,6 +54,7 @@ export interface IRealityMesh {
     id: string;
     displayName: string;
     type: string;
+    itwinid: string;
 }
 
 // Interface for iTwins
@@ -75,6 +66,17 @@ export interface ITwin {
     number: string;
     type: string;
     status: string;
+}
+
+// Interface for iModels
+export interface IBIMModel {
+    itwinid: string;
+    id: string;
+    displayName: string;
+    description: string;
+    lat: number;
+    lng: number;
+    height: number;
 }
 
 export interface IModelBoundingSphere {
