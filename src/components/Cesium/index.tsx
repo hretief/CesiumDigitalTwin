@@ -10,7 +10,7 @@ import { Drawer } from '@mui/material';
 import { DataGrid, GridColDef } from '@mui/x-data-grid';
 
 // #region Cesium imports
-import { Viewer as CesiumViewer, Cartesian3, SceneMode, Terrain, Ion, HeadingPitchRange, BoundingSphere, CreditDisplay } from 'cesium';
+import { Viewer as CesiumViewer, Cartesian3, SceneMode, Terrain, Ion, GoogleMaps, HeadingPitchRange, BoundingSphere, CreditDisplay } from 'cesium';
 import { Viewer, Scene, CesiumComponentRef } from 'resium';
 // #endregion
 
@@ -26,12 +26,13 @@ import { useSelector, useDispatch } from 'react-redux';
 // #region Local imports
 import BIMModel from './BIMModel';
 import RealityMesh from './RealityMesh';
+import GoogleTiles from './GoogleTiles';
 import { IBIMModel, IRealityMesh, IAttrib, IElement, IModelBoundingSphere } from '../../classes/interfaces';
 import attribs from '../../assets/attribs.json';
 import { RootState } from '../../store';
 import { DRAWER_STATE } from './state/drawerSlice';
 import { UPD_SELECTED_ELEMENT } from '../Cesium/BIMModel/state/elementSlice';
-import { ION_TOKEN } from '../../utils/constants';
+import { GOOGLE_MAPS_KEY, ION_TOKEN } from '../../utils/constants';
 import { fetchiModelsByScene } from '../Models/api';
 import { fetchRealityMesh3DTiles } from './RealityMesh/api';
 
@@ -56,6 +57,8 @@ const columns: GridColDef[] = [
 
 export default function CesiumPage() {
     Ion.defaultAccessToken = ION_TOKEN;
+    GoogleMaps.defaultApiKey = GOOGLE_MAPS_KEY;
+
     const auth = useAuth();
 
     var token: string | undefined;
@@ -157,6 +160,7 @@ export default function CesiumPage() {
             <Grid>
                 <Viewer animation={false} navigationHelpButton={true} selectionIndicator={false} homeButton={false} infoBox={false} timeline={false} ref={refViewer} style={{ position: 'absolute', top: 150, left: 0, right: 0, bottom: 0 }}>
                     <Scene mode={SceneMode.SCENE3D} morphDuration={10}>
+                        <GoogleTiles></GoogleTiles>
                         {cadmodels.map((model) => (
                             <BIMModel imodelId={model.id} name={model.displayName} description={model.description}></BIMModel>
                         ))}
