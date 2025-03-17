@@ -5,6 +5,6 @@ import cesium from 'vite-plugin-cesium';
 
 // https://vite.dev/config/
 export default defineConfig({
-    server: { https: true }, // Not needed for Vite 5+
+    //server: { https: true }, // Not needed for Vite 5+
     plugins: [mkcert(), react(), cesium()],
 });

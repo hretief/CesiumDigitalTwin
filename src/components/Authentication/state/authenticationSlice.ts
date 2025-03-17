@@ -25,14 +25,14 @@ export const authenticationSlice = createSlice({
             isProcessingRequest: true,
          };
       },
-      success: (state, action: PayloadAction<any>) => {
+      success: (state) => {
          return {
             ...state,
             isProcessingRequest: false,
          };
       },
 
-      error: (state, action: PayloadAction<string>) => {
+      error: (state) => {
          return {
             ...state,
             isProcessingRequest: false,

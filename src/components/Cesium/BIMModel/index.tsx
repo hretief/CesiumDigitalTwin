@@ -1,6 +1,6 @@
 //Cesium imports
-import { ScreenSpaceEventType, Cesium3DTileFeature, Color, Cesium3DTileset as Cesium3DdTilesetType, ITwinPlatform, ITwinData, Cartesian3, ScreenSpaceEventHandler as CesiumScreenSpaceEventHandler, HeadingPitchRange } from 'cesium';
-import { Entity, Cesium3DTileset, useCesium, ScreenSpaceEventHandler, ScreenSpaceEvent } from 'resium';
+import { ScreenSpaceEventType, Cesium3DTileFeature, Color, Cesium3DTileset as Cesium3DdTilesetType, ITwinPlatform, ITwinData, Cartesian3, ScreenSpaceEventHandler as CesiumScreenSpaceEventHandler } from 'cesium';
+import { Cesium3DTileset, useCesium } from 'resium';
 
 //React imports
 import { useEffect, useState } from 'react';

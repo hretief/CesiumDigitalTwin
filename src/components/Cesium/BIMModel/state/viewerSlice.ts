@@ -1,6 +1,5 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { IModelBoundingSphere } from '../../../../classes/interfaces';
-import { BoundingSphere } from 'cesium';
 
 const initialState: IModelBoundingSphere[] = [];
 

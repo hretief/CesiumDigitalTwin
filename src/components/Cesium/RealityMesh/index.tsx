@@ -3,7 +3,7 @@ import { Cesium3DTileset as Cesium3DdTilesetType, ITwinPlatform, ITwinData } fro
 import { Entity, Cesium3DTileset, useCesium } from 'resium';
 
 //React imports
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import { useAuth } from 'react-oidc-context';
 
 //Local imports

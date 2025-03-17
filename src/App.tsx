@@ -1,4 +1,4 @@
-import { useMemo, useState, useEffect } from 'react';
+import { useMemo, useState } from 'react';
 import { CssBaseline, ThemeProvider } from '@mui/material';
 import { BrowserRouter as Router } from 'react-router-dom';
 import { useAuth } from 'react-oidc-context';

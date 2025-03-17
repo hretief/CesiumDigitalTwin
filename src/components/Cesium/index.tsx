@@ -10,7 +10,7 @@ import { Drawer } from '@mui/material';
 import { DataGrid, GridColDef } from '@mui/x-data-grid';
 
 // #region Cesium imports
-import { Viewer as CesiumViewer, Cartesian3, SceneMode, Terrain, Ion, GoogleMaps, HeadingPitchRange, BoundingSphere, CreditDisplay } from 'cesium';
+import { Viewer as CesiumViewer, SceneMode, Ion, GoogleMaps, HeadingPitchRange, BoundingSphere } from 'cesium';
 import { Viewer, Scene, CesiumComponentRef } from 'resium';
 // #endregion
 
@@ -33,7 +33,6 @@ import { RootState } from '../../store';
 import { DRAWER_STATE } from './state/drawerSlice';
 import { UPD_SELECTED_ELEMENT } from '../Cesium/BIMModel/state/elementSlice';
 import { GOOGLE_MAPS_KEY, ION_TOKEN } from '../../utils/constants';
-import { fetchiModelsByScene } from '../Models/api';
 import { fetchRealityMesh3DTiles } from './RealityMesh/api';
 
 //import { fetchiTwinRealityDataReferences } from './RealityMesh/api';

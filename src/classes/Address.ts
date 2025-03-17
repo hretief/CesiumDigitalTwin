@@ -1,4 +1,4 @@
-import { IAddress } from './interfaces/IAddress';
+import { IAddress } from './interfaces';
 import { GeoLocation } from './GeoLocation';
 
 export class Address implements IAddress {
