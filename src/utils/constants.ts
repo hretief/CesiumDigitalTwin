@@ -35,11 +35,9 @@ export const IMODEL_URL = 'https://api.bentley.com/imodels';
 export const REALITY_DATA_URL = 'https://api.bentley.com/reality-management/reality-data';
 
 export const CESIUM_TOKEN_URI = 'https://api.cesium.com/itwin/token';
-export const ION_TOKEN = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJqdGkiOiI2OTUxMjZhMC03YzRlLTQ4OGUtYWJjMC1kMWFhYzExMDEwYjAiLCJpZCI6MjU0Nzc2LCJpYXQiOjE3NDEzNzkwMzh9.uWuFjye2a3ttrEwm4YG9QxgNAiqPdO3jxJMmyL0CZEQ';
+export const ION_TOKEN = import.meta.env.VITE_ION_TOKEN;
 
 // Google
-export const GOOGLE_AIRQUALITY_TILES_URI = 'https://airquality.googleapis.com/v1/mapTypes/US_AQI/heatmapTiles';
-
-export const GOOGLE_SERVICE_ACCOUNT = '572768068988-compute@developer.gserviceaccount.com';
-
-export const GOOGLE_MAPS_KEY = 'AIzaSyC2F4XqBasRPF-lYGG7saSorZyEiXqmtgU';
+export const GOOGLE_AIRQUALITY_TILES_URI = import.meta.env.VITE_GOOGLE_AIRQUALITY_TILES_URI;
+export const GOOGLE_SERVICE_ACCOUNT = import.meta.env.VITE_GOOGLE_SERVICE_ACCOUNT;
+export const GOOGLE_MAPS_KEY = import.meta.env.VITE_GOOGLE_MAPS_KEY;

@@ -55,7 +55,7 @@ const columns: GridColDef[] = [
 // #endregion
 
 export default function CesiumPage() {
-    Ion.defaultAccessToken = ION_TOKEN;
+    Ion.defaultAccessToken = ION_TOKEN || '';
     GoogleMaps.defaultApiKey = GOOGLE_MAPS_KEY;
 
     const auth = useAuth();
