@@ -1,4 +1,4 @@
-import { useMemo, useState } from 'react';
+import { useMemo, useState, useEffect } from 'react';
 import { CssBaseline, ThemeProvider } from '@mui/material';
 import { BrowserRouter as Router } from 'react-router-dom';
 import { useAuth } from 'react-oidc-context';
@@ -32,15 +32,13 @@ function App() {
     console.log(`is logged is ${isLoggedIn}`);
     console.log(`is authenticated is ${auth.isAuthenticated}`);
     console.log(auth.isAuthenticated);
-
     /*
     useEffect(() => {
         if (!isLoggedIn) {
             auth.signinRedirect();
         }
     }, [isLoggedIn]);
-    */
-
+*/
     return (
         <>
             <AppContext.Provider value={appClient}>
