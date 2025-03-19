@@ -11,7 +11,7 @@ import { useEffect } from 'react';
 import {} from '../../Theme/state/themeSlice';
 import { GOOGLE_AIRQUALITY_TILES_URI, GOOGLE_MAPS_KEY } from '../../../utils/constants';
 
-export default function GoogleTiles() {
+export default function GoogleAirQualityTiles() {
     const { viewer } = useCesium();
 
     useEffect(() => {
@@ -26,6 +26,7 @@ export default function GoogleTiles() {
                 let heatMapLayer: ImageryLayer = new ImageryLayer(singleTileProvider);
 
                 viewer?.imageryLayers.add(heatMapLayer);
+
             } catch (e) {
                 alert(`Error reported while processing Google AQI Component: ${e}`);
             }

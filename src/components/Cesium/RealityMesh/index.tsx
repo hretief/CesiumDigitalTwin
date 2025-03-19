@@ -41,7 +41,7 @@ export default function RealityMesh(props: IRealityMeshProps) {
             }
         };
         fetchUrl();
-    }, [scene]);
+    }, [viewer?.scene]);
 
     return (
         <>

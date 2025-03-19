@@ -21,6 +21,7 @@ import { Home } from '../pages/Home';
 import { PageDefault as Dashboard } from '../components/PageDefault';
 import UsersPage from '../components/Users/UserPage';
 import CesiumPage from '../components/Cesium';
+import CesiumSamplerPage from '../components/CesiumSampler';
 import TwinsPage from '../components/Twins/TwinPage';
 /*
 import Counter from '../components/counter/Counter';
@@ -81,6 +82,17 @@ const routes: Array<Route> = [
         path: '/cesium',
         isEnabled: true,
         icon: CodeIcon,
+        appendDivider: true,
+    },
+
+    {
+        key: 'router-cesium-sampler',
+        title: 'Cesium Sampler',
+        description: 'Cesium Sampler',
+        component: CesiumSamplerPage,
+        path: '/cesium-sampler',
+        isEnabled: true,
+        icon: FacilityIcon,
         appendDivider: true,
     },
 ];

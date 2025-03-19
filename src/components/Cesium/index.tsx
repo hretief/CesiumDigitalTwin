@@ -10,7 +10,7 @@ import { Drawer } from '@mui/material';
 import { DataGrid, GridColDef } from '@mui/x-data-grid';
 
 // #region Cesium imports
-import { Viewer as CesiumViewer, SceneMode, Ion, GoogleMaps, HeadingPitchRange, BoundingSphere } from 'cesium';
+import { Viewer as CesiumViewer, SceneMode, Ion, GoogleMaps, HeadingPitchRange, BoundingSphere, IonGeocodeProviderType } from 'cesium';
 import { Viewer, Scene, CesiumComponentRef } from 'resium';
 // #endregion
 
@@ -26,7 +26,8 @@ import { useSelector, useDispatch } from 'react-redux';
 // #region Local imports
 import BIMModel from './BIMModel';
 import RealityMesh from './RealityMesh';
-import GoogleTiles from './GoogleTiles';
+import GoogleAirQualityTiles from './GoogleAirQualityTiles';
+import GooglePhotoRealisticTiles from './GooglePhotoRealistic3DTiles';
 import { IBIMModel, IRealityMesh, IAttrib, IElement, IModelBoundingSphere } from '../../classes/interfaces';
 import attribs from '../../assets/attribs.json';
 import { RootState } from '../../store';
@@ -157,9 +158,21 @@ export default function CesiumPage() {
             </Box>
 
             <Grid>
-                <Viewer animation={false} navigationHelpButton={true} selectionIndicator={false} homeButton={false} infoBox={false} timeline={false} ref={refViewer} style={{ position: 'absolute', top: 150, left: 0, right: 0, bottom: 0 }}>
+                <Viewer
+                    baseLayer={false}
+                    geocoder={IonGeocodeProviderType.GOOGLE}
+                    //globe={false}
+                    animation={false}
+                    navigationHelpButton={true}
+                    selectionIndicator={false}
+                    homeButton={false}
+                    infoBox={false}
+                    timeline={false}
+                    ref={refViewer}
+                    style={{ position: 'absolute', top: 150, left: 0, right: 0, bottom: 0 }}
+                >
                     <Scene mode={SceneMode.SCENE3D} morphDuration={10}>
-                        <GoogleTiles></GoogleTiles>
+                        <GooglePhotoRealisticTiles></GooglePhotoRealisticTiles>
                         {cadmodels.map((model) => (
                             <BIMModel imodelId={model.id} name={model.displayName} description={model.description}></BIMModel>
                         ))}
