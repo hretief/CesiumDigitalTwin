@@ -32,7 +32,7 @@ import { IBIMModel, IRealityMesh, IAttrib, IElement, IModelBoundingSphere } from
 import attribs from '../../assets/attribs.json';
 import { RootState } from '../../store';
 import { DRAWER_STATE } from './state/drawerSlice';
-import { UPD_SELECTED_ELEMENT } from '../Cesium/BIMModel/state/elementSlice';
+import { UPD_SELECTED_ELEMENT } from './BIMModel/state/elementSlice';
 import { GOOGLE_MAPS_KEY, ION_TOKEN } from '../../utils/constants';
 import { fetchRealityMesh3DTiles } from './RealityMesh/api';
 

@@ -14,13 +14,13 @@ import {
     Factory as FacilityIcon,
     HeatPump as EquipIcon,
     People as People,
-    Satellite as Satellite
+    Satellite as Satellite,
 } from '@mui/icons-material';
 
 import { Home } from '../pages/Home';
 import { PageDefault as Dashboard } from '../components/PageDefault';
 import UsersPage from '../components/Users/UserPage';
-import CesiumPage from '../components/Cesium';
+import CesiumPage from '../components/Viewer';
 import CesiumSamplerPage from '../components/CesiumSampler';
 import TwinsPage from '../components/Twins/TwinPage';
 /*
