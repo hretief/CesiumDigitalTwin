@@ -11,7 +11,7 @@ import { DataGrid, GridColDef } from '@mui/x-data-grid';
 
 // #region Cesium imports
 import { Viewer as CesiumViewer, SceneMode, Ion, GoogleMaps, HeadingPitchRange, BoundingSphere, IonGeocodeProviderType } from 'cesium';
-import { Viewer, Scene, CesiumComponentRef } from 'resium';
+import { Viewer, Scene, CesiumComponentRef, Globe } from 'resium';
 // #endregion
 
 // #region React imports
@@ -168,9 +168,12 @@ export default function CesiumPage() {
                     homeButton={false}
                     infoBox={false}
                     timeline={false}
+                    sceneModePicker={false}
+                    baseLayerPicker={false}
                     ref={refViewer}
                     style={{ position: 'absolute', top: 150, left: 0, right: 0, bottom: 0 }}
                 >
+                    <Globe show={false} />
                     <Scene mode={SceneMode.SCENE3D} morphDuration={10}>
                         <GooglePhotoRealisticTiles></GooglePhotoRealisticTiles>
                         {cadmodels.map((model) => (
