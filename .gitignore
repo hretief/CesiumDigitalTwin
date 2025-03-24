@@ -12,7 +12,8 @@ dist
 dist-ssr
 *.local
 .env
-*.pem
+.cert/*.pem
+.cert/localhost*
 
 
 # Editor directories and files
