@@ -60,6 +60,7 @@ export default function BIMModel(props: IModelProps) {
                 mytiles = await ITwinData.createTilesetFromIModelId(props.imodelId);
                 scene?.primitives.add(mytiles);
                 console.log(`myfiles URL to the tileset for iModel (${props.imodelId}): ${mytiles!.resource!.url! as string}, boundingsphere: ${mytiles!.boundingSphere}`);
+                console.log(mytiles);
 
                 bs = { imodelId: props.imodelId!.toString(), boundingSphere: mytiles!.boundingSphere };
                 dispatch(APPEND_BOUNDING_SPHERE(bs));
