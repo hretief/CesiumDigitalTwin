@@ -41,7 +41,7 @@ import { fetchRealityMesh3DTiles } from './RealityMesh/api';
 
 // #endregion
 
-// restart depl  oy */
+// restart depl oy */
 
 // #region Global variables
 
