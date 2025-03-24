@@ -1,0 +1,6 @@
+[
+    { "field": "id", "headerName": "Number", "width": 150 },
+    { "field": "name", "headerName": "Name", "width": 300 },
+    { "field": "type", "headerName": "Type", "width": 250 },
+    { "field": "description", "headerName": "Description", "width": 650 }
+]

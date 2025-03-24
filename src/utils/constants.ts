@@ -33,6 +33,7 @@ export const USERS_URL = 'https://jsonplaceholder.typicode.com/users';
 export const ITWIN_URL = 'https://api.bentley.com/itwins';
 export const IMODEL_URL = 'https://api.bentley.com/imodels';
 export const REALITY_DATA_URL = 'https://api.bentley.com/reality-management/reality-data';
+export const LAYERS_URL = 'https://api.cesium.com/v1/assets';
 
 export const CESIUM_TOKEN_URI = 'https://api.cesium.com/itwin/token';
 export const ION_TOKEN = import.meta.env.VITE_ION_TOKEN;

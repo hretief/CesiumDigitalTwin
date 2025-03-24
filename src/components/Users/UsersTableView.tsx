@@ -51,13 +51,8 @@ function UsersTableView() {
         <>
             <div>
                 <Box>
-                    <Grid container spacing={2}>
-                        <Grid>
-                            <DataGrid rows={users} columns={columns} loading={!users.length} pagination onRowClick={handleClick} />
-                        </Grid>
-                        <Grid>
-                            <div>1</div>
-                        </Grid>
+                    <Grid>
+                        <DataGrid rows={users} columns={columns} loading={!users.length} pagination onRowClick={handleClick} />
                     </Grid>
                 </Box>
             </div>

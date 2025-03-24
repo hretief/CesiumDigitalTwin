@@ -83,3 +83,17 @@ export interface IModelBoundingSphere {
     imodelId: string;
     boundingSphere: BoundingSphere;
 }
+
+export interface ILayer {
+    id: number;
+    type: string;
+    name: string;
+    description: string;
+    attribution: string;
+    status: string;
+    bytes: number;
+    dateAdded: string;
+    exportable: string;
+    percentComplete: number;
+    archivable: string;
+}

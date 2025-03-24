@@ -8,7 +8,7 @@ import {
     AccountBoxRounded as UserIcon,
     SettingsOutlined as SettingsIcon,
     ListAlt as ListIcon,
-    CreditCard as BillingIcon,
+    Map as MapIcon,
     Handyman as ProjectIcon,
     WebAsset as BrowserIcon,
     Factory as FacilityIcon,
@@ -23,9 +23,10 @@ import UsersPage from '../components/Users/UserPage';
 import CesiumPage from '../components/Viewer';
 import CesiumSamplerPage from '../components/CesiumSampler';
 import TwinsPage from '../components/Twins/TwinPage';
+import LayerPage from '../components/Layers/LayerPage';
 /*
 import Counter from '../components/counter/Counter';
-import ProjectsPage from '../components/projects/ProjectsPage';
+
 import SegmentsPage from '../components/segments/SegmentsPage';
 import FacilitiesPage from '../components/Facilities/FacilitiesPage';
 
@@ -71,6 +72,16 @@ const routes: Array<Route> = [
         path: '/tenant-twins',
         isEnabled: true,
         icon: Satellite,
+        appendDivider: true,
+    },
+    {
+        key: 'router-layer',
+        title: 'Layers',
+        description: 'Layers',
+        component: LayerPage,
+        path: '/tenant-layer',
+        isEnabled: true,
+        icon: MapIcon,
         appendDivider: true,
     },
 
