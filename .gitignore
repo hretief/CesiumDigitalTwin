@@ -12,7 +12,8 @@ dist
 dist-ssr
 *.local
 .env
-.cert
+*.pem
+
 
 # Editor directories and files
 .vscode/*
