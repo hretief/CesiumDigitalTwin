@@ -18,7 +18,7 @@ export const LIGHT_MODE_THEME = 'light';
 export const PORT = 3000;
 
 //# Your test application public address
-export const APP_URL = 'https://localhost:3000';
+export const APP_URL = 'https://web-sparta.azurewebsites.net/';
 export const AUTH_AUTHORITY = 'https://ims.bentley.com';
 
 //# Your application client ID and secret (Sparta)
