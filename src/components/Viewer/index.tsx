@@ -10,8 +10,8 @@ import { Drawer } from '@mui/material';
 import { DataGrid, GridColDef } from '@mui/x-data-grid';
 
 // #region Cesium imports
-import { Viewer as CesiumViewer, SceneMode, Ion, GoogleMaps, HeadingPitchRange, BoundingSphere, IonGeocodeProviderType } from 'cesium';
-import { Viewer, Scene, CesiumComponentRef, Globe } from 'resium';
+import { Viewer as CesiumViewer, SceneMode, Ion, GoogleMaps, HeadingPitchRange, BoundingSphere, IonGeocodeProviderType, Cartesian3 } from 'cesium';
+import { Viewer, Scene, CesiumComponentRef, Globe, Entity } from 'resium';
 // #endregion
 
 // #region React imports
@@ -27,6 +27,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import BIMModel from './BIMModel';
 import RealityMesh from './RealityMesh';
 import GoogleAirQualityTiles from './GoogleAirQualityTiles';
+import IonKmlDatasource from './IonKmlDatasource';
 import GooglePhotoRealisticTiles from './GooglePhotoRealistic3DTiles';
 import { IBIMModel, IRealityMesh, IAttrib, IElement, IModelBoundingSphere } from '../../classes/interfaces';
 import attribs from '../../assets/attribs.json';
@@ -37,6 +38,8 @@ import { GOOGLE_MAPS_KEY, ION_TOKEN } from '../../utils/constants';
 import { fetchRealityMesh3DTiles } from './RealityMesh/api';
 
 //import { fetchiTwinRealityDataReferences } from './RealityMesh/api';
+import models from '../../assets/imodels.json';
+
 // #endregion
 
 // #endregion
@@ -98,7 +101,7 @@ export default function CesiumPage() {
 
     // #region Main Code
 
-    cadmodels = currentTwinsScene; // need to store the loaded cadmodes in redux...
+    cadmodels = models; //currentTwinsScene; // need to store the loaded cadmodes in redux...
 
     useEffect(() => {
         // Find al the reality meshes for the iTwin
@@ -114,6 +117,7 @@ export default function CesiumPage() {
                 let i: number = 0;
                 while (itwinMeshes[i]) {
                     itwinMeshes[i].itwinid = itwin.itwinid;
+                    itwinMeshes[i].heightcorrection = itwin.heightcorrection;
                     i++;
                 }
 
@@ -154,7 +158,7 @@ export default function CesiumPage() {
                     {cadmodels
                         //.filter((x) => x !== undefined)
                         .map((model) => (
-                            <Tab label={model.displayName} value={{ id: model.id }} />
+                            <Tab label={model.itwinname} value={{ id: model.id }} />
                         ))}
                 </Tabs>
             </Box>
@@ -176,14 +180,19 @@ export default function CesiumPage() {
                     style={{ position: 'absolute', top: 150, left: 0, right: 0, bottom: 0 }}
                 >
                     <Globe show={false} />
+
                     <Scene mode={SceneMode.SCENE3D} morphDuration={10}>
-                        <GooglePhotoRealisticTiles></GooglePhotoRealisticTiles>
                         {cadmodels.map((model) => (
-                            <BIMModel imodelId={model.id} name={model.displayName} description={model.description}></BIMModel>
+                            <BIMModel imodelId={model.id} name={model.displayName} description={model.description} heightcorrection={model.heightcorrection}></BIMModel>
                         ))}
                         {meshes.map((mesh) => (
-                            <RealityMesh itwinId={mesh.itwinid} id={mesh.id} displayName={mesh.displayName} type={mesh.type}></RealityMesh>
+                            <RealityMesh itwinId={mesh.itwinid} id={mesh.id} displayName={mesh.displayName} type={mesh.type} heightcorrection={mesh.heightcorrection}></RealityMesh>
                         ))}
+
+                        {cadmodels.map((model) => (
+                            <Entity point={{ pixelSize: 20 }} name={model.itwinname} description={model.displayName} position={Cartesian3.fromDegrees(model.lng, model.lat, model.height)} />
+                        ))}
+                        <GooglePhotoRealisticTiles></GooglePhotoRealisticTiles>
                     </Scene>
                 </Viewer>
                 <Box sx={{ width: { sm: drawerWidth }, flexShrink: { sm: 0 } }}>
@@ -228,6 +237,8 @@ export default function CesiumPage() {
 }
 
 /*
+                    <IonKmlDatasource ionId={2876273} />
+                    <IonKmlDatasource ionId={3252993} />
 
 
 

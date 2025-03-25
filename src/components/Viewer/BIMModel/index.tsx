@@ -1,5 +1,5 @@
 //Cesium imports
-import { ScreenSpaceEventType, Cesium3DTileFeature, Color, Cesium3DTileset as Cesium3DdTilesetType, ITwinPlatform, ITwinData, Cartesian3, ScreenSpaceEventHandler as CesiumScreenSpaceEventHandler } from 'cesium';
+import { ScreenSpaceEventType, Cesium3DTileFeature, Color, Cesium3DTileset as Cesium3DdTilesetType, ITwinPlatform, ITwinData, Cartesian3, ScreenSpaceEventHandler as CesiumScreenSpaceEventHandler, Cartographic, Matrix4 } from 'cesium';
 import { Cesium3DTileset, useCesium } from 'resium';
 
 //React imports
@@ -21,6 +21,7 @@ interface IModelProps {
     position?: Cartesian3;
     name?: string;
     description?: string;
+    heightcorrection: number;
 }
 
 const unselectFeature = (feature: any) => {
@@ -63,7 +64,16 @@ export default function BIMModel(props: IModelProps) {
                 console.log(mytiles);
 
                 bs = { imodelId: props.imodelId!.toString(), boundingSphere: mytiles!.boundingSphere };
+
+                const cartographic = Cartographic.fromCartesian(mytiles!.boundingSphere.center);
+                const surface = Cartesian3.fromRadians(cartographic.longitude, cartographic.latitude, 0.0);
+                const offset = Cartesian3.fromRadians(cartographic.longitude, cartographic.latitude, props.heightcorrection); //this is where we adjust the height of the model
+                const translation = Cartesian3.subtract(offset, surface, new Cartesian3());
+                mytiles!.modelMatrix = Matrix4.fromTranslation(translation);
+
                 dispatch(APPEND_BOUNDING_SPHERE(bs));
+
+                console.log(`${import.meta.url} - Completed retrieval of:  ${props.imodelId}`);
             } catch (e) {
                 console.log(`Token: ${token}`);
                 console.log(`Error reported while processing iModel ${props.imodelId} from Components/BIMModel Component: ${e}`);

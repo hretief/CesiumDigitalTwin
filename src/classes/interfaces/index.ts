@@ -55,6 +55,7 @@ export interface IRealityMesh {
     displayName: string;
     type: string;
     itwinid: string;
+    heightcorrection: number;
 }
 
 // Interface for iTwins
@@ -71,12 +72,15 @@ export interface ITwin {
 // Interface for iModels
 export interface IBIMModel {
     itwinid: string;
+    itwincode: string;
+    itwinname: string;
     id: string;
     displayName: string;
     description: string;
     lat: number;
     lng: number;
     height: number;
+    heightcorrection: number;
 }
 
 export interface IModelBoundingSphere {
