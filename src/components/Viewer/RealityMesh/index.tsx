@@ -29,8 +29,6 @@ export default function RealityMesh(props: IRealityMeshProps) {
         token = auth.user?.access_token;
     }
 
-    console.log(`Paining Realit yMesh for: ${props.displayName}`);
-
     useEffect(() => {
         const fetchUrl = async () => {
             try {
@@ -44,8 +42,6 @@ export default function RealityMesh(props: IRealityMeshProps) {
                 const offset = Cartesian3.fromRadians(cartographic.longitude, cartographic.latitude, props.heightcorrection); //this is where we adjust the height of the model
                 const translation = Cartesian3.subtract(offset, surface, new Cartesian3());
                 mytiles!.modelMatrix = Matrix4.fromTranslation(translation);
-
-                console.log(`myfiles URL to the tileset for iTwin (${props.itwinId}): ${mytiles!.resource!.url! as string}`);
             } catch (e) {
                 console.log(`Error reported while processing iTwin ${props.itwinId} from Components/RealityMesh Component: ${e}`);
             }

@@ -129,21 +129,14 @@ export default function CesiumPage() {
     }, [cadmodels]);
 
     useEffect(() => {
-        if (isFirstRender.current) {
-            dispatch(DRAWER_STATE({ open: false }));
-            dispatch(UPD_SELECTED_ELEMENT(undefined));
+        dispatch(DRAWER_STATE({ open: false }));
+        dispatch(UPD_SELECTED_ELEMENT(undefined));
 
-            if (!currentSelectedElement) {
-                toggleDrawer(false);
-            }
+        if (!currentSelectedElement) {
+            toggleDrawer(false);
         }
 
         isFirstRender.current = false;
-
-        // ---> StrictMode: The following is REQUIRED to reset/cleanup:
-        return () => {
-            isFirstRender.current = true;
-        };
     }, []); // ---> The `[]` is required, it won't work with `[myDependency]` etc.
 
     // #endregion

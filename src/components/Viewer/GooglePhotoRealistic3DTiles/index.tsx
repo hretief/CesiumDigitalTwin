@@ -37,7 +37,6 @@ const CesiumComponent = createCesiumComponent({
                 if (viewer && viewer.scene) {
                     viewer.scene.primitives.add(mytiles);
                 }
-                console.log(`myfiles URL to the tileset for iTwin (${props.itwinId}): ${mytiles!.resource!.url! as string}`);
             } catch (e) {
                 console.log(`Error reported while processing iTwin ${props.itwinId} from Components/RealityMesh Component: ${e}`);
             }

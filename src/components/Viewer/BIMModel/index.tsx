@@ -60,9 +60,6 @@ export default function BIMModel(props: IModelProps) {
                 ITwinPlatform.defaultAccessToken = token;
                 mytiles = await ITwinData.createTilesetFromIModelId(props.imodelId);
                 scene?.primitives.add(mytiles);
-                console.log(`myfiles URL to the tileset for iModel (${props.imodelId}): ${mytiles!.resource!.url! as string}, boundingsphere: ${mytiles!.boundingSphere}`);
-                console.log(mytiles);
-
                 bs = { imodelId: props.imodelId!.toString(), boundingSphere: mytiles!.boundingSphere };
 
                 const cartographic = Cartographic.fromCartesian(mytiles!.boundingSphere.center);
@@ -72,8 +69,6 @@ export default function BIMModel(props: IModelProps) {
                 mytiles!.modelMatrix = Matrix4.fromTranslation(translation);
 
                 dispatch(APPEND_BOUNDING_SPHERE(bs));
-
-                console.log(`${import.meta.url} - Completed retrieval of:  ${props.imodelId}`);
             } catch (e) {
                 console.log(`Token: ${token}`);
                 console.log(`Error reported while processing iModel ${props.imodelId} from Components/BIMModel Component: ${e}`);
@@ -103,7 +98,7 @@ export default function BIMModel(props: IModelProps) {
                 const length = propertyIds.length;
                 for (let i = 0; i < length; ++i) {
                     const propertyId = propertyIds[i];
-                    console.log(`{propertyId}: ${selectedFeature.getProperty(propertyId)}`);
+                    //console.log(`{propertyId}: ${selectedFeature.getProperty(propertyId)}`);
                 }
                 // end debug code
                 selectedElement = (selectedFeature as Cesium3DTileFeature).getProperty('element');
@@ -134,7 +129,3 @@ export default function BIMModel(props: IModelProps) {
         </>
     );
 }
-/*
-
-            <Entity point={{ pixelSize: 20 }} name={props.name} description={props.description} position={props.position} />
-*/
