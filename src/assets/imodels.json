@@ -9,7 +9,8 @@
         "lat": 35.83759415727747,
         "lng": -77.97630628565874,
         "height": 1000,
-        "heightcorrection": 0
+        "heightcorrection": 0,
+        "tilesUrl": ""
     },
     {
         "itwinid": "94827bb3-e983-4181-bae7-e73ab32b09df",
@@ -21,7 +22,8 @@
         "lat": 42.212992,
         "lng": -71.032533,
         "height": 1000,
-        "heightcorrection": 0
+        "heightcorrection": 0,
+        "tilesUrl": ""
     },
     {
         "itwinid": "7010c713-71e3-4c11-ac05-fd369d2a5174",
@@ -33,7 +35,8 @@
         "lat": 55.91708582560409,
         "lng": 12.283814513126975,
         "height": 1000,
-        "heightcorrection": 40
+        "heightcorrection": 40,
+        "tilesUrl": ""
     },
 
     {
@@ -46,7 +49,8 @@
         "lat": 43.465237522433476,
         "lng": -83.7779615166854,
         "height": 1000,
-        "heightcorrection": 0
+        "heightcorrection": 0,
+        "tilesUrl": ""
     },
     {
         "itwinid": "406b6392-bb82-4308-b0ba-a7cc0501bc1f",
@@ -58,7 +62,8 @@
         "lat": 41.869822,
         "lng": -87.882844,
         "height": 1000,
-        "heightcorrection": 0
+        "heightcorrection": 0,
+        "tilesUrl": ""
     },
     {
         "itwinid": "0eb3e9ae-0ec2-442e-a488-b6ad9ecedb5d",
@@ -70,7 +75,8 @@
         "lat": 35.904568,
         "lng": -77.888,
         "height": 1000,
-        "heightcorrection": 20
+        "heightcorrection": 20,
+        "tilesUrl": ""
     },
     {
         "itwinid": "df916507-d94b-4867-9e7a-50353c196249",
@@ -82,6 +88,7 @@
         "lat": 45.26620278,
         "lng": 4.668880556,
         "height": 400,
-        "heightcorrection": 53
+        "heightcorrection": 53,
+        "tilesUrl": ""
     }
 ]

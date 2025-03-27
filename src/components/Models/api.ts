@@ -2,9 +2,10 @@
  * Copyright © Bentley Systems, Incorporated. All rights reserved.
  * See LICENSE.md in the project root for license terms and full copyright notice.
  */
-
-import { IMODEL_URL } from '../../utils/constants';
-import { IBIMModel } from '../../classes/interfaces';
+import { IMODEL_URL, ION_TOKEN } from '../../utils/constants';
+import { IBIMModel, IRealityMesh, ITwin } from '../../classes/interfaces';
+import { ITwinData, ITwinPlatform, Ion } from 'cesium';
+import { fetchRealityMesh3DTiles } from '../Viewer/RealityMesh/api';
 
 const baseUrl = `${IMODEL_URL}`;
 async function modelsAPI(token: string | undefined, url: string) {
@@ -60,38 +61,68 @@ export async function fetchiModelsByScene(token: string | undefined, SceneiTwinI
     }
 }
 
-/*
-    "iModels": [
-        {
-            "id": "2a570860-9c15-4cc8-a13e-55bf74ab069a",
-            "displayName": "iTX_SYS_356cec8f-4506-40c6-b42e-4b9db6711866",
-            "dataCenterLocation": "East US"
-        },
-        {
-            "id": "02140ee1-3f9a-4869-ab91-03a3c03bd411",
-            "displayName": "iTX_SYS_57076388-c5a9-4845-ba95-8689bbe45f46",
-            "dataCenterLocation": "East US"
-        },
-        {
-            "id": "06b1eb67-d8ba-4191-b062-16143ad40947",
-            "displayName": "iTX_SYS_58bd0efd-a125-45eb-83d7-1abb30bc31a7",
-            "dataCenterLocation": "East US"
-        },
-        {
-            "id": "b3255bf6-e47f-45f6-aa94-e012ee1a638c",
-            "displayName": "iTX_SYS_869f19e4-489f-4ef4-b09c-a80d9d83fb72",
-            "dataCenterLocation": "East US"
-        },
-        {
-            "id": "ae836e1e-66ab-4258-b8e5-4a58d2f2e1d0",
-            "displayName": "iTX_SYS_95ed4348-b31b-4782-ac37-8296d6203b10",
-            "dataCenterLocation": "East US"
-        },
-        {
-            "id": "b95148fc-0af8-4aaf-9848-148c4d02eb49",
-            "displayName": "iTX_SYS_fbe5109c-0e4e-40cf-b36f-b0c3bdc23b3a",
-            "dataCenterLocation": "East US"
-        }
-    ],
+export async function fetchiModelsTilesets(token: string | undefined, iModelArr: IBIMModel[]): Promise<IBIMModel[]> {
+    Ion.defaultAccessToken = ION_TOKEN || '';
+    try {
+        ITwinPlatform.defaultAccessToken = token;
+        const allModels = await Promise.all(
+            iModelArr.map(async (model) => {
+                if (!model.tilesUrl) {
+                    const mytiles = await ITwinData.createTilesetFromIModelId(model.id);
+                    model.tilesUrl = mytiles?.resource.url;
+                }
+                return model; // Return only the updated model
+            })
+        );
 
-*/
+        return allModels; // No need to flatten as `map` already returns a flat array
+    } catch (error) {
+        console.error('Error fetching iModel Tiles:', error);
+        throw error;
+    }
+}
+
+export async function fetchRealityMeshTilesets(token: string | undefined, MeshArr: IRealityMesh[]): Promise<IRealityMesh[]> {
+    Ion.defaultAccessToken = ION_TOKEN || '';
+    try {
+        ITwinPlatform.defaultAccessToken = token;
+        const allMeshes = await Promise.all(
+            MeshArr.map(async (mesh) => {
+                if (!mesh.tilesUrl) {
+                    const mytiles = await ITwinData.createTilesetForRealityDataId(mesh.itwinid, mesh.id);
+                    mesh.tilesUrl = mytiles?.resource.url;
+                }
+                return mesh; // Return only the updated model
+            })
+        );
+
+        // Flatten the array of arrays
+        return allMeshes;
+    } catch (error) {
+        console.error('Error fetching iModel Tiles:', error);
+        throw error;
+    }
+}
+
+// Find al the reality meshes for the iTwin
+async function fetchRealityDataReferences(token: string | undefined, iTwinId: string) {
+    const returnedData = await fetchRealityMesh3DTiles(token, iTwinId);
+    const json = await returnedData.realityData;
+    return (json as IRealityMesh[]).filter((x) => x.type === 'RealityMesh3DTiles');
+}
+
+export async function fetchAllRealityDataReferences(token: string | undefined, cadmodels: IBIMModel[]) {
+    let meshes: IRealityMesh[] = [];
+    for (const model of cadmodels) {
+        let itwinMeshes: IRealityMesh[] = await fetchRealityDataReferences(token, model.itwinid);
+        let i: number = 0;
+        while (itwinMeshes[i]) {
+            itwinMeshes[i].itwinid = model.itwinid;
+            itwinMeshes[i].heightcorrection = model.heightcorrection;
+            i++;
+        }
+
+        meshes.push(...itwinMeshes);
+    }
+    return meshes;
+}

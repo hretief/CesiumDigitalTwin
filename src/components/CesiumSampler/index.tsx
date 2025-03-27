@@ -1,35 +1,58 @@
 import { createGooglePhotorealistic3DTileset, Ion, IonGeocodeProviderType, Cartesian3, HeadingPitchRoll } from 'cesium';
-import { Viewer, createCesiumComponent, useCesium, Camera, CameraFlyTo, Globe } from 'resium';
+import { Viewer, createCesiumComponent, useCesium, Camera, CameraFlyTo, Globe, Entity } from 'resium';
 import { useEffect, useState } from 'react';
 
 import { ION_TOKEN } from '../../utils/constants';
+import { IBIMModel, IRealityMesh } from '../../classes/interfaces';
+import { fetchiModelsTilesets } from '../../components/Models/api';
+import { fetchRealityMeshTilesets, fetchAllRealityDataReferences } from '../../components/Models/api';
+import cadmodels from '../../assets/imodels.json';
+import { useAuth } from 'react-oidc-context';
+import BIMModel from '../Viewer/BIMModel';
+import RealityMesh from '../Viewer/RealityMesh';
 
 export default function CesiumSamplerPage() {
     Ion.defaultAccessToken = ION_TOKEN || '';
+    const auth = useAuth();
     const { viewer } = useCesium();
+    const [imodels, setImodels] = useState<IBIMModel[]>([]);
+    const [meshes, setMeshes] = useState<IRealityMesh[]>([]);
 
-    let dest:Cartesian3 = new Cartesian3(-2693797.551060477, -4297135.517094725, 3854700.7470414364);
-    let orient:HeadingPitchRoll = new HeadingPitchRoll(4.6550106925119925, -0.2863894863138836, 1.3561760425773173e-7);
+    var token: string | undefined;
 
-    const CesiumComponent = createCesiumComponent({
-        name: 'googlePhotoTile',
-
-        create(context) {
-            createGooglePhotorealistic3DTileset({ onlyUsingWithGoogleGeocoder: true }).then((tileset) => {
-                context.scene?.primitives.add(tileset);
-            });
-        },
-    });
-    if (viewer?.scene?.skyAtmosphere) {
-        viewer.scene.skyAtmosphere.show = true;
+    if (auth.isAuthenticated) {
+        token = auth.user?.access_token;
     }
+
+    useEffect(() => {
+        const fetchData = async () => {
+            try {
+                const iModels: IBIMModel[] = await fetchiModelsTilesets(token, cadmodels);
+                setImodels(iModels);
+
+                const refs: IRealityMesh[] = await fetchAllRealityDataReferences(token, cadmodels);
+                const meshes: IRealityMesh[] = await fetchRealityMeshTilesets(token, refs);
+                setMeshes(meshes);
+            } catch (e) {
+                console.log(`Token: ${token}`);
+                console.log(`Error reported while processing iModel Component: ${e}`);
+            }
+        };
+        fetchData();
+    }, [viewer]);
 
     return (
         <>
-            <Viewer geocoder={IonGeocodeProviderType.GOOGLE} timeline={false} animation={false} sceneModePicker={false} baseLayerPicker={false}>
-                <CesiumComponent />
-                <Globe show={false} />
-                <CameraFlyTo orientation={orient} destination={dest} />
+            <Viewer full timeline={false} animation={false} sceneModePicker={false} baseLayerPicker={false} homeButton={true}>
+                {meshes.map((mesh) => (
+                    <RealityMesh itwinId={mesh.itwinid} id={mesh.id} displayName={mesh.displayName} type={mesh.type} heightcorrection={mesh.heightcorrection} tilesUrl={mesh.tilesUrl}></RealityMesh>
+                ))}
+                {imodels.map((model) => (
+                    <BIMModel imodelId={model.id} name={model.displayName} description={model.description} heightcorrection={model.heightcorrection} tilesUrl={model.tilesUrl}></BIMModel>
+                ))}
+                {imodels.map((model) => (
+                    <Entity point={{ pixelSize: 20 }} name={model.itwinname} description={model.displayName} position={Cartesian3.fromDegrees(model.lng, model.lat, model.height)} />
+                ))}
             </Viewer>
         </>
     );

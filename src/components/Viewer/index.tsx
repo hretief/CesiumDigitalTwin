@@ -6,12 +6,12 @@ import FavoriteIcon from '@mui/icons-material/Favorite';
 import LocationOnIcon from '@mui/icons-material/LocationOn';
 import { Box, Tabs, Tab } from '@mui/material';
 import Grid from '@mui/material/Grid2';
-import { Drawer } from '@mui/material';
+import { Drawer, CircularProgress } from '@mui/material';
 import { DataGrid, GridColDef } from '@mui/x-data-grid';
 
 // #region Cesium imports
-import { Viewer as CesiumViewer, SceneMode, Ion, GoogleMaps, HeadingPitchRange, BoundingSphere, IonGeocodeProviderType, Cartesian3 } from 'cesium';
-import { Viewer, Scene, CesiumComponentRef, Globe, Entity } from 'resium';
+import { Viewer as CesiumViewer, SceneMode, Ion, GoogleMaps, BoundingSphere, IonGeocodeProviderType, Cartesian3 } from 'cesium';
+import { Viewer, Scene, CesiumComponentRef, Globe, Entity, useCesium } from 'resium';
 // #endregion
 
 // #region React imports
@@ -35,21 +35,17 @@ import { RootState } from '../../store';
 import { DRAWER_STATE } from './state/drawerSlice';
 import { UPD_SELECTED_ELEMENT } from './BIMModel/state/elementSlice';
 import { GOOGLE_MAPS_KEY, ION_TOKEN } from '../../utils/constants';
-import { fetchRealityMesh3DTiles } from './RealityMesh/api';
 
-//import { fetchiTwinRealityDataReferences } from './RealityMesh/api';
+import { fetchRealityMeshTilesets, fetchAllRealityDataReferences, fetchiModelsTilesets } from '../../components/Models/api';
 import models from '../../assets/imodels.json';
 
 // #endregion
 
 // #endregion
 
-// restart depl oy */
-
 // #region Global variables
 
 const elemAttribs: IAttrib[] = attribs.attribs;
-let meshes: IRealityMesh[] = [];
 let cadmodels: IBIMModel[] = [];
 
 type Anchor = 'top' | 'left' | 'bottom' | 'right';
@@ -73,14 +69,19 @@ export default function CesiumPage() {
     // #region Local variables
     const refViewer = useRef<CesiumComponentRef<CesiumViewer>>(null);
     const [value, setValue] = useState(0);
-    const isFirstRender = useRef(true);
     const dispatch = useDispatch();
+    const { viewer } = useCesium();
+    const [imodels, setImodels] = useState<IBIMModel[]>([]);
+    const [meshes, setMeshes] = useState<IRealityMesh[]>([]);
+    const [loading, setLoading] = useState(false); // State to track loading
+    const [progress, setProgress] = useState(0); // State to track progress percentage
 
     const currentSelectedElement: IElement = useSelector((state: RootState) => state.element as IElement);
     const modelBoundingSpheres: IModelBoundingSphere[] = useSelector((state: RootState) => state.viewerRed as IModelBoundingSphere[]);
     const drawerState: boolean = useSelector((state: RootState) => state.drawers.open);
     const currentTwinsScene: IBIMModel[] = useSelector((state: RootState) => state.scene);
     const defaultAnchor: Anchor = 'right';
+    cadmodels = models; //currentTwinsScene; // need to store the loaded cadmodes in redux...
     // #endregion
 
     // #region Event Handlers
@@ -91,8 +92,14 @@ export default function CesiumPage() {
     const handleChange = (event: React.SyntheticEvent, newValue: any) => {
         if (newValue.id !== 0) {
             // Find the tileset for this iModel and fly to it
-            const bs: BoundingSphere = modelBoundingSpheres.filter((x) => x.imodelId === newValue.id)[0].boundingSphere;
-            refViewer.current?.cesiumElement?.camera.viewBoundingSphere(bs, new HeadingPitchRange(0, -0.5, 0));
+            const matchingSphere = modelBoundingSpheres.find((x) => x.imodelId === newValue?.id);
+            if (matchingSphere?.boundingSphere) {
+                const bs: BoundingSphere = matchingSphere.boundingSphere;
+                refViewer.current?.cesiumElement?.camera.flyToBoundingSphere(bs, { duration: 2 });
+            } else {
+                console.warn('Bounding sphere not found for the selected model.');
+                refViewer.current?.cesiumElement?.camera.flyHome(1);
+            }
         } else {
             refViewer.current?.cesiumElement?.camera.flyHome(1);
         }
@@ -101,32 +108,37 @@ export default function CesiumPage() {
 
     // #region Main Code
 
-    cadmodels = models; //currentTwinsScene; // need to store the loaded cadmodes in redux...
+    useEffect(() => {
+        if (refViewer.current?.cesiumElement) {
+            // Add event listener for tile loading progress
+            refViewer.current?.cesiumElement?.scene.globe.tileLoadProgressEvent.addEventListener((tilesLoading) => {
+                if (tilesLoading > 0) {
+                    setLoading(true);
+                    setProgress((prev) => Math.min(100, prev + 10)); // Simulate progress
+                } else {
+                    setLoading(false);
+                    setProgress(100); // Set progress to 100% when done
+                }
+            });
+        }
+    }, [refViewer]);
 
     useEffect(() => {
-        // Find al the reality meshes for the iTwin
-        const fetchRealityData = async (token: string | undefined, iTwinId: string) => {
-            const returnedData = await fetchRealityMesh3DTiles(token, iTwinId);
-            const json = await returnedData.realityData;
-            return (json as IRealityMesh[]).filter((x) => x.type === 'RealityMesh3DTiles');
-        };
+        const fetchData = async () => {
+            try {
+                const iModels: IBIMModel[] = await fetchiModelsTilesets(token, cadmodels);
+                setImodels(iModels);
 
-        const fetchAllRealityData = async () => {
-            for (const itwin of cadmodels) {
-                let itwinMeshes: IRealityMesh[] = await fetchRealityData(token, itwin.itwinid);
-                let i: number = 0;
-                while (itwinMeshes[i]) {
-                    itwinMeshes[i].itwinid = itwin.itwinid;
-                    itwinMeshes[i].heightcorrection = itwin.heightcorrection;
-                    i++;
-                }
-
-                meshes.push(...itwinMeshes);
+                const refs: IRealityMesh[] = await fetchAllRealityDataReferences(token, cadmodels);
+                const meshes: IRealityMesh[] = await fetchRealityMeshTilesets(token, refs);
+                setMeshes(meshes);
+            } catch (e) {
+                console.log(`Token: ${token}`);
+                console.log(`Error reported while processing iModel Component: ${e}`);
             }
         };
-
-        fetchAllRealityData();
-    }, [cadmodels]);
+        fetchData();
+    }, [viewer]);
 
     useEffect(() => {
         dispatch(DRAWER_STATE({ open: false }));
@@ -135,9 +147,7 @@ export default function CesiumPage() {
         if (!currentSelectedElement) {
             toggleDrawer(false);
         }
-
-        isFirstRender.current = false;
-    }, []); // ---> The `[]` is required, it won't work with `[myDependency]` etc.
+    }, []);
 
     // #endregion
     const drawerWidth = '25%';
@@ -145,14 +155,26 @@ export default function CesiumPage() {
     // #region Render code
     return (
         <>
+            {loading && (
+                <Box
+                    sx={{
+                        position: 'absolute',
+                        top: '50%',
+                        left: '50%',
+                        transform: 'translate(-50%, -50%)',
+                        zIndex: 0,
+                    }}
+                >
+                    <CircularProgress variant="determinate" value={progress} />
+                </Box>
+            )}
+
             <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
                 <Tabs aria-label="basic tabs example" onChange={handleChange} value={false}>
                     <Tab label={'Home'} value={{ id: 0, lat: 0, lng: 0, height: 0 }} />
-                    {cadmodels
-                        //.filter((x) => x !== undefined)
-                        .map((model) => (
-                            <Tab label={model.itwinname} value={{ id: model.id }} />
-                        ))}
+                    {imodels.map((model) => (
+                        <Tab label={model.itwinname} value={{ id: model.id }} />
+                    ))}
                 </Tabs>
             </Box>
 
@@ -175,15 +197,15 @@ export default function CesiumPage() {
                     <Globe show={false} />
 
                     <Scene mode={SceneMode.SCENE3D} morphDuration={10}>
-                        {cadmodels.map((model) => (
-                            <BIMModel imodelId={model.id} name={model.displayName} description={model.description} heightcorrection={model.heightcorrection}></BIMModel>
+                        {imodels.map((model) => (
+                            <BIMModel imodelId={model.id} name={model.displayName} description={model.description} heightcorrection={model.heightcorrection} tilesUrl={model.tilesUrl}></BIMModel>
                         ))}
                         {meshes.map((mesh) => (
-                            <RealityMesh itwinId={mesh.itwinid} id={mesh.id} displayName={mesh.displayName} type={mesh.type} heightcorrection={mesh.heightcorrection}></RealityMesh>
+                            <RealityMesh itwinId={mesh.itwinid} id={mesh.id} displayName={mesh.displayName} type={mesh.type} heightcorrection={mesh.heightcorrection} tilesUrl={mesh.tilesUrl}></RealityMesh>
                         ))}
 
                         {cadmodels.map((model) => (
-                            <Entity point={{ pixelSize: 20 }} name={model.itwinname} description={model.displayName} position={Cartesian3.fromDegrees(model.lng, model.lat, model.height)} />
+                            <Entity point={{ pixelSize: 20 }} name={model.itwinname} description={model.displayName} position={Cartesian3.fromDegrees(model.lng, model.lat, model.height)}></Entity>
                         ))}
                         <GooglePhotoRealisticTiles></GooglePhotoRealisticTiles>
                     </Scene>
@@ -228,43 +250,3 @@ export default function CesiumPage() {
 
     // #endregion
 }
-
-/*
-                    <IonKmlDatasource ionId={2876273} />
-                    <IonKmlDatasource ionId={3252993} />
-
-
-
-
-
-                <Viewer animation={false} navigationHelpButton={true} selectionIndicator={false} homeButton={false} infoBox={false} timeline={false} ref={refViewer} style={{ position: 'absolute', top: 150, left: 0, right: 0, bottom: 0 }}>
-                    <Scene mode={SceneMode.SCENE3D} morphDuration={10}>
-                        {cadmodels.map((model) => (
-                            <BIMModel imodelId={model.id} position={Cartesian3.fromDegrees(model.lng, model.lat, model.height)} name={model.displayName} description={model.description}></BIMModel>
-                        ))}
-                        {meshes.map((mesh) => (
-                            <RealityMesh itwinId={currentTwinId.current} id={mesh.id} displayName={mesh.displayName} type={mesh.type}></RealityMesh>
-                        ))}
-                    </Scene>
-                </Viewer>
-                <Box sx={{ width: { sm: drawerWidth }, flexShrink: { sm: 0 } }}>
-                    <Fragment key={defaultAnchor}>
-                        <Drawer
-                            sx={{
-                                '& .MuiDrawer-paper': { boxSizing: 'border-box', width: drawerWidth, height: '80%', top: '15%' },
-                                zIndex: 1,
-                            }}
-                            anchor={defaultAnchor}
-                            open={drawerState}
-                            onClose={toggleDrawer(false)}
-                        >
-                            <Box role="presentation" onClick={toggleDrawer(false)} onKeyDown={toggleDrawer(false)}>
-                                <Box>
-                                    <DataGrid rows={elemAttribs} columns={columns} loading={!elemAttribs.length} pagination />
-                                </Box>
-                            </Box>
-                        </Drawer>
-                    </Fragment>
-                </Box>
-
-*/

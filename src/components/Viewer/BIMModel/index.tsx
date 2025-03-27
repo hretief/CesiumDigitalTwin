@@ -1,5 +1,5 @@
 //Cesium imports
-import { ScreenSpaceEventType, Cesium3DTileFeature, Color, Cesium3DTileset as Cesium3DdTilesetType, ITwinPlatform, ITwinData, Cartesian3, ScreenSpaceEventHandler as CesiumScreenSpaceEventHandler, Cartographic, Matrix4 } from 'cesium';
+import { ScreenSpaceEventType, Cesium3DTileFeature, Color, Cartesian3, ScreenSpaceEventHandler as CesiumScreenSpaceEventHandler, Cartographic, Matrix4 } from 'cesium';
 import { Cesium3DTileset, useCesium } from 'resium';
 
 //React imports
@@ -22,6 +22,7 @@ interface IModelProps {
     name?: string;
     description?: string;
     heightcorrection: number;
+    tilesUrl?: string;
 }
 
 const unselectFeature = (feature: any) => {
@@ -42,7 +43,6 @@ export default function BIMModel(props: IModelProps) {
     const [picking, setPicking] = useState(true);
     const dispatch = useDispatch();
 
-    var mytiles: Cesium3DdTilesetType | undefined;
     var selectedFeature: any | undefined;
     var selectedElement: string | undefined;
     var token: string | undefined;
@@ -52,30 +52,6 @@ export default function BIMModel(props: IModelProps) {
     }
 
     useEffect(() => {
-        const fetchUrl = async () => {
-            try {
-                let bsArr: IModelBoundingSphere[] = [];
-                let bs: IModelBoundingSphere;
-
-                ITwinPlatform.defaultAccessToken = token;
-                mytiles = await ITwinData.createTilesetFromIModelId(props.imodelId);
-                scene?.primitives.add(mytiles);
-                bs = { imodelId: props.imodelId!.toString(), boundingSphere: mytiles!.boundingSphere };
-
-                const cartographic = Cartographic.fromCartesian(mytiles!.boundingSphere.center);
-                const surface = Cartesian3.fromRadians(cartographic.longitude, cartographic.latitude, 0.0);
-                const offset = Cartesian3.fromRadians(cartographic.longitude, cartographic.latitude, props.heightcorrection); //this is where we adjust the height of the model
-                const translation = Cartesian3.subtract(offset, surface, new Cartesian3());
-                mytiles!.modelMatrix = Matrix4.fromTranslation(translation);
-
-                dispatch(APPEND_BOUNDING_SPHERE(bs));
-            } catch (e) {
-                console.log(`Token: ${token}`);
-                console.log(`Error reported while processing iModel ${props.imodelId} from Components/BIMModel Component: ${e}`);
-            }
-        };
-        fetchUrl();
-
         const handler = new CesiumScreenSpaceEventHandler(scene?.canvas);
         handler.setInputAction((movement: any) => {
             if (!picking) return;
@@ -119,11 +95,15 @@ export default function BIMModel(props: IModelProps) {
     return (
         <>
             <Cesium3DTileset
-                url={''}
-                onReady={(tileset) => {
-                    if (viewer) {
-                        viewer.zoomTo(tileset);
-                    }
+                url={props.tilesUrl as string}
+                onReady={(mytiles) => {
+                    const cartographic = Cartographic.fromCartesian(mytiles!.boundingSphere.center);
+                    const surface = Cartesian3.fromRadians(cartographic.longitude, cartographic.latitude, 0.0);
+                    const offset = Cartesian3.fromRadians(cartographic.longitude, cartographic.latitude, props.heightcorrection); //this is where we adjust the height of the model
+                    const translation = Cartesian3.subtract(offset, surface, new Cartesian3());
+                    mytiles!.modelMatrix = Matrix4.fromTranslation(translation);
+
+                    dispatch(APPEND_BOUNDING_SPHERE({ imodelId: props.imodelId, boundingSphere: mytiles!.boundingSphere }));
                 }}
             ></Cesium3DTileset>
         </>

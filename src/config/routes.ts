@@ -15,6 +15,7 @@ import {
     HeatPump as EquipIcon,
     People as People,
     Satellite as Satellite,
+    ThreeDRotation as Globe,
 } from '@mui/icons-material';
 
 import { Home } from '../pages/Home';
@@ -87,12 +88,12 @@ const routes: Array<Route> = [
 
     {
         key: 'router-cesium',
-        title: 'Cesium',
-        description: 'Cesium',
+        title: 'Digital Twin',
+        description: 'World-wide Twin',
         component: CesiumPage,
         path: '/cesium',
         isEnabled: true,
-        icon: CodeIcon,
+        icon: Globe,
         appendDivider: true,
     },
 
