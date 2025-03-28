@@ -1,15 +1,17 @@
 import { Viewer as CesiumViewer, createGooglePhotorealistic3DTileset, Ion, IonGeocodeProviderType, Cartesian3, HeadingPitchRoll, BoundingSphere, Terrain } from 'cesium';
 import { Viewer, createCesiumComponent, useCesium, Camera, CameraFlyTo, Globe, Entity, CesiumComponentRef } from 'resium';
-import { useEffect, useState, useRef } from 'react';
-import { SpeedDial, SpeedDialAction } from '@mui/material';
+import { useEffect, useState, useRef, Fragment } from 'react';
+import { SpeedDial, SpeedDialAction, Box, Drawer } from '@mui/material';
+import { DataGrid, GridColDef } from '@mui/x-data-grid';
+
 import QrCodeIcon from '@mui/icons-material/QrCode';
 import Home from '@mui/icons-material/Home';
 import SpeedDialIcon from '@mui/material/SpeedDialIcon';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import { useAuth } from 'react-oidc-context';
 
 import { ION_TOKEN } from '../../utils/constants';
-import { IBIMModel, IRealityMesh, IModelBoundingSphere } from '../../classes/interfaces';
+import { IBIMModel, IRealityMesh, IModelBoundingSphere, IAttrib, IElement } from '../../classes/interfaces';
 import { fetchiModelsTilesets } from '../../services/api';
 import { fetchRealityMeshTilesets, fetchAllRealityDataReferences } from '../../services/api';
 import cadmodels from '../../assets/imodels.json';
@@ -19,19 +21,38 @@ import RealityMesh from './RealityMesh';
 import IonKmlDatasource from './IonKmlDatasource';
 import { useLogger } from '../LoggerProvider';
 import { RootState } from '../../store';
+import attribs from '../../assets/attribs.json';
+import { DRAWER_STATE } from './state/drawerSlice';
+import { UPD_SELECTED_ELEMENT } from './BIMModel/state/elementSlice';
 import GooglePhotoRealisticTiles from './GooglePhotoRealistic3DTiles';
+
+const elemAttribs: IAttrib[] = attribs.attribs;
+type Anchor = 'top' | 'left' | 'bottom' | 'right';
+
+const columns: GridColDef[] = [
+    { field: 'Name', headerName: 'Name', width: 200 },
+    { field: 'Value', headerName: 'Value', width: 250 },
+];
 
 export default function CesiumSamplerPage() {
     Ion.defaultAccessToken = ION_TOKEN || '';
     const auth = useAuth();
     const { logMessage } = useLogger();
+    const dispatch = useDispatch();
     const [imodels, setImodels] = useState<IBIMModel[]>([]);
     const [meshes, setMeshes] = useState<IRealityMesh[]>([]);
     const modelBoundingSpheres: IModelBoundingSphere[] = useSelector((state: RootState) => state.viewerRed as IModelBoundingSphere[]);
+    const currentSelectedElement: IElement = useSelector((state: RootState) => state.element as IElement);
+    const drawerState: boolean = useSelector((state: RootState) => state.drawers.open);
     const refViewer = useRef<CesiumComponentRef<CesiumViewer>>(null);
 
     var token: string | undefined;
     var isLoggedIn: Boolean = auth.isAuthenticated;
+    const drawerWidth = '25%';
+
+    const toggleDrawer = (isopen: boolean) => () => {
+        dispatch(DRAWER_STATE({ open: isopen }));
+    };
 
     useEffect(() => {
         if (isLoggedIn) {
@@ -58,6 +79,15 @@ export default function CesiumSamplerPage() {
         };
         fetchData();
     }, [refViewer]);
+
+    useEffect(() => {
+        dispatch(DRAWER_STATE({ open: false }));
+        dispatch(UPD_SELECTED_ELEMENT(undefined));
+
+        if (!currentSelectedElement) {
+            toggleDrawer(false);
+        }
+    }, []);    
 
     const handleSpeedDialClick = (model: IBIMModel) => {
         logMessage(`Selected: ${model.displayName} `, 'info');
@@ -93,6 +123,26 @@ export default function CesiumSamplerPage() {
                     <Entity point={{ pixelSize: 20 }} name={model.itwinname} description={model.displayName} position={Cartesian3.fromDegrees(model.lng, model.lat, model.height)} />
                 ))}
             </Viewer>
+
+            <Box sx={{ width: { sm: drawerWidth }, flexShrink: { sm: 0 } }}>
+                <Fragment key={'right'}>
+                    <Drawer
+                        sx={{
+                            '& .MuiDrawer-paper': { boxSizing: 'border-box', width: drawerWidth, height: '80%', top: '15%' },
+                            zIndex: 1,
+                        }}
+                        anchor={'right'}
+                        open={drawerState}
+                        onClose={toggleDrawer(false)}
+                    >
+                        <Box role="presentation" onClick={toggleDrawer(false)} onKeyDown={toggleDrawer(false)}>
+                            <Box>
+                                <DataGrid rows={elemAttribs} columns={columns} loading={!elemAttribs.length} pagination />
+                            </Box>
+                        </Box>
+                    </Drawer>
+                </Fragment>
+            </Box>
 
             <SpeedDial ariaLabel="Digital Twins" sx={{ position: 'relative', top: '50%' }} icon={<SpeedDialIcon />}>
                 <SpeedDialAction icon={<Home />} tooltipTitle={'Home'} tooltipOpen sx={{ '& .MuiSpeedDialAction-staticTooltipLabel': { width: '16rem' } }} onClick={() => refViewer.current?.cesiumElement?.camera.flyHome(1)} />
