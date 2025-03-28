@@ -22,7 +22,6 @@ import { Home } from '../pages/Home';
 import { PageDefault as Dashboard } from '../components/PageDefault';
 import UsersPage from '../components/Users/UserPage';
 import CesiumPage from '../components/Viewer';
-import CesiumSamplerPage from '../components/CesiumSampler';
 import TwinsPage from '../components/Twins/TwinPage';
 import LayerPage from '../components/Layers/LayerPage';
 /*
@@ -87,24 +86,13 @@ const routes: Array<Route> = [
     },
 
     {
-        key: 'router-cesium',
+        key: 'router-viewer',
         title: 'Digital Twin',
         description: 'World-wide Twin',
         component: CesiumPage,
-        path: '/cesium',
+        path: '/viewer',
         isEnabled: true,
         icon: Globe,
-        appendDivider: true,
-    },
-
-    {
-        key: 'router-cesium-sampler',
-        title: 'Cesium Sampler',
-        description: 'Cesium Sampler',
-        component: CesiumSamplerPage,
-        path: '/cesium-sampler',
-        isEnabled: true,
-        icon: FacilityIcon,
         appendDivider: true,
     },
 ];
