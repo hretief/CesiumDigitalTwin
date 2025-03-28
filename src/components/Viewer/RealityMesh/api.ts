@@ -9,7 +9,6 @@ const baseUrl = `${REALITY_DATA_URL}`;
 
 async function realityDataAPI(token: string, url: string) {
     try {
-        console.log(`Fetching Reality Data from: ${url}`);
         const response = await fetch(url, {
             method: 'GET',
             headers: new Headers({
@@ -24,6 +23,7 @@ async function realityDataAPI(token: string, url: string) {
         return data;
     } catch (error: any) {
         console.error('An Error Occured: ', error.message);
+        throw new Error(`An Error Occured:  ${error.message} `);
     }
 }
 

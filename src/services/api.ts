@@ -2,10 +2,10 @@
  * Copyright © Bentley Systems, Incorporated. All rights reserved.
  * See LICENSE.md in the project root for license terms and full copyright notice.
  */
-import { IMODEL_URL, ION_TOKEN } from '../../utils/constants';
-import { IBIMModel, IRealityMesh, ITwin } from '../../classes/interfaces';
+import { IMODEL_URL, ION_TOKEN } from '../utils/constants';
+import { IBIMModel, IRealityMesh, ITwin } from '../classes/interfaces';
 import { ITwinData, ITwinPlatform, Ion } from 'cesium';
-import { fetchRealityMesh3DTiles } from '../Viewer/RealityMesh/api';
+import { fetchRealityMesh3DTiles } from '../components/Viewer/RealityMesh/api';
 
 const baseUrl = `${IMODEL_URL}`;
 async function modelsAPI(token: string | undefined, url: string) {

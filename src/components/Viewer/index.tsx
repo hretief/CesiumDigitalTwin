@@ -36,7 +36,7 @@ import { DRAWER_STATE } from './state/drawerSlice';
 import { UPD_SELECTED_ELEMENT } from './BIMModel/state/elementSlice';
 import { GOOGLE_MAPS_KEY, ION_TOKEN } from '../../utils/constants';
 
-import { fetchRealityMeshTilesets, fetchAllRealityDataReferences, fetchiModelsTilesets } from '../../components/Models/api';
+import { fetchRealityMeshTilesets, fetchAllRealityDataReferences, fetchiModelsTilesets } from '../../services/api';
 import models from '../../assets/imodels.json';
 
 // #endregion
@@ -63,9 +63,16 @@ export default function CesiumPage() {
     const auth = useAuth();
 
     var token: string | undefined;
-    if (auth.isAuthenticated) {
-        token = auth.user?.access_token;
-    }
+    var isLoggedIn: Boolean = auth.isAuthenticated;
+
+    useEffect(() => {
+        if (isLoggedIn) {
+            token = auth.user?.access_token;
+        } else {
+            auth.signinRedirect();
+        }
+    }, [isLoggedIn]);
+
     // #region Local variables
     const refViewer = useRef<CesiumComponentRef<CesiumViewer>>(null);
     const [value, setValue] = useState(0);
@@ -203,11 +210,11 @@ export default function CesiumPage() {
                         {meshes.map((mesh) => (
                             <RealityMesh itwinId={mesh.itwinid} id={mesh.id} displayName={mesh.displayName} type={mesh.type} heightcorrection={mesh.heightcorrection} tilesUrl={mesh.tilesUrl}></RealityMesh>
                         ))}
-
                         {cadmodels.map((model) => (
                             <Entity point={{ pixelSize: 20 }} name={model.itwinname} description={model.displayName} position={Cartesian3.fromDegrees(model.lng, model.lat, model.height)}></Entity>
                         ))}
                         <GooglePhotoRealisticTiles></GooglePhotoRealisticTiles>
+                        <IonKmlDatasource ionId={3123950} />
                     </Scene>
                 </Viewer>
                 <Box sx={{ width: { sm: drawerWidth }, flexShrink: { sm: 0 } }}>

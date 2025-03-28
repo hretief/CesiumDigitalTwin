@@ -7,7 +7,7 @@ import { useSelector, useDispatch } from 'react-redux';
 
 import { RootState } from '../../store';
 import { fetchTwins } from './api';
-import { fetchiModelsByScene } from '../Models/api';
+import { fetchiModelsByScene } from '../../services/api';
 import { APPEND_ITWINS_SCENE, REPLACE_ITWINS_SCENE, EMPTY_ITWINS_SCENE } from '../Scenes/state/sceneSlice';
 import twincolumns from '../../assets/twincolumns.json';
 import { IBIMModel } from '../../classes/interfaces';

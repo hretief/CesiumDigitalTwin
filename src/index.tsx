@@ -7,6 +7,8 @@ import { AuthProvider } from 'react-oidc-context';
 import Configuration from './components/Authentication/config';
 import { Config } from './components/Authentication/models';
 
+import {LoggerProvider} from './components/LoggerProvider'
+
 const container = document.getElementById('root')!;
 const root = createRoot(container);
 
@@ -22,7 +24,9 @@ const oidcConfig = {
 
 root.render(
     <AuthProvider {...oidcConfig}>
-        <App />
+        <LoggerProvider>
+            <App />
+        </LoggerProvider>
     </AuthProvider>
 );
 
